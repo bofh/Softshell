@@ -13,6 +13,8 @@
 		3C159933154DAAFE0085A804 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3C159931154DAAFE0085A804 /* Credits.rtf */; };
 		3C159936154DAAFE0085A804 /* CRTLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */; };
 		3C159939154DAAFE0085A804 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C159937154DAAFE0085A804 /* MainMenu.xib */; };
+		3C159958154DABC00085A804 /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = 3C159956154DABC00085A804 /* AUTHORS */; };
+		3C159959154DABC00085A804 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 3C159957154DABC00085A804 /* COPYING */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,14 +23,24 @@
 		3C159925154DAAFE0085A804 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		3C159926154DAAFE0085A804 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3C159927154DAAFE0085A804 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		3C15992A154DAAFE0085A804 /* Cocoa-rtl-sdr-Info.plist */ = {isa = PBXFileReference; path = "Cocoa-rtl-sdr-Info.plist"; sourceTree = "<group>"; };
+		3C15992A154DAAFE0085A804 /* Cocoa-rtl-sdr-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Cocoa-rtl-sdr-Info.plist"; sourceTree = "<group>"; };
 		3C15992C154DAAFE0085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3C15992E154DAAFE0085A804 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3C159930154DAAFE0085A804 /* Cocoa-rtl-sdr-Prefix.pch */ = {isa = PBXFileReference; path = "Cocoa-rtl-sdr-Prefix.pch"; sourceTree = "<group>"; };
+		3C159930154DAAFE0085A804 /* Cocoa-rtl-sdr-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cocoa-rtl-sdr-Prefix.pch"; sourceTree = "<group>"; };
 		3C159932154DAAFE0085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		3C159934154DAAFE0085A804 /* CRTLAppDelegate.h */ = {isa = PBXFileReference; path = CRTLAppDelegate.h; sourceTree = "<group>"; };
+		3C159934154DAAFE0085A804 /* CRTLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRTLAppDelegate.h; sourceTree = "<group>"; };
 		3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRTLAppDelegate.m; sourceTree = "<group>"; };
 		3C159938154DAAFE0085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		3C15993F154DAB260085A804 /* Cocoa-rtl-sdr.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Cocoa-rtl-sdr.entitlements"; sourceTree = "<group>"; };
+		3C15994F154DABA80085A804 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		3C159950154DABA80085A804 /* rtl_tcp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rtl_tcp.c; sourceTree = "<group>"; };
+		3C159951154DABA80085A804 /* rtl-sdr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "rtl-sdr.c"; sourceTree = "<group>"; };
+		3C159952154DABA80085A804 /* tuner_e4000.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tuner_e4000.c; sourceTree = "<group>"; };
+		3C159953154DABA80085A804 /* tuner_fc0012.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tuner_fc0012.c; sourceTree = "<group>"; };
+		3C159954154DABA80085A804 /* tuner_fc0013.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tuner_fc0013.c; sourceTree = "<group>"; };
+		3C159955154DABA80085A804 /* tuner_fc2580.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tuner_fc2580.c; sourceTree = "<group>"; };
+		3C159956154DABC00085A804 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
+		3C159957154DABC00085A804 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +94,8 @@
 		3C159928154DAAFE0085A804 /* Cocoa-rtl-sdr */ = {
 			isa = PBXGroup;
 			children = (
+				3C159940154DAB500085A804 /* New Group */,
+				3C15993F154DAB260085A804 /* Cocoa-rtl-sdr.entitlements */,
 				3C159934154DAAFE0085A804 /* CRTLAppDelegate.h */,
 				3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */,
 				3C159937154DAAFE0085A804 /* MainMenu.xib */,
@@ -100,6 +114,22 @@
 				3C159931154DAAFE0085A804 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3C159940154DAB500085A804 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				3C159956154DABC00085A804 /* AUTHORS */,
+				3C159957154DABC00085A804 /* COPYING */,
+				3C15994F154DABA80085A804 /* main.c */,
+				3C159950154DABA80085A804 /* rtl_tcp.c */,
+				3C159951154DABA80085A804 /* rtl-sdr.c */,
+				3C159952154DABA80085A804 /* tuner_e4000.c */,
+				3C159953154DABA80085A804 /* tuner_fc0012.c */,
+				3C159954154DABA80085A804 /* tuner_fc0013.c */,
+				3C159955154DABA80085A804 /* tuner_fc2580.c */,
+			);
+			name = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,6 +186,8 @@
 				3C15992D154DAAFE0085A804 /* InfoPlist.strings in Resources */,
 				3C159933154DAAFE0085A804 /* Credits.rtf in Resources */,
 				3C159939154DAAFE0085A804 /* MainMenu.xib in Resources */,
+				3C159958154DABC00085A804 /* AUTHORS in Resources */,
+				3C159959154DABC00085A804 /* COPYING in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,9 +281,12 @@
 		3C15993D154DAAFE0085A804 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Cocoa-rtl-sdr/Cocoa-rtl-sdr.entitlements";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Prefix.pch";
 				INFOPLIST_FILE = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -260,9 +295,12 @@
 		3C15993E154DAAFE0085A804 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Cocoa-rtl-sdr/Cocoa-rtl-sdr.entitlements";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Prefix.pch";
 				INFOPLIST_FILE = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
