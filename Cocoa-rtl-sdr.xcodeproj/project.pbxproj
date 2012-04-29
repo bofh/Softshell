@@ -1,0 +1,294 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3C159923154DAAFE0085A804 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C159922154DAAFE0085A804 /* Cocoa.framework */; };
+		3C15992D154DAAFE0085A804 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3C15992B154DAAFE0085A804 /* InfoPlist.strings */; };
+		3C15992F154DAAFE0085A804 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C15992E154DAAFE0085A804 /* main.m */; };
+		3C159933154DAAFE0085A804 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3C159931154DAAFE0085A804 /* Credits.rtf */; };
+		3C159936154DAAFE0085A804 /* CRTLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */; };
+		3C159939154DAAFE0085A804 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C159937154DAAFE0085A804 /* MainMenu.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3C15991E154DAAFE0085A804 /* Cocoa-rtl-sdr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cocoa-rtl-sdr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C159922154DAAFE0085A804 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		3C159925154DAAFE0085A804 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		3C159926154DAAFE0085A804 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3C159927154DAAFE0085A804 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3C15992A154DAAFE0085A804 /* Cocoa-rtl-sdr-Info.plist */ = {isa = PBXFileReference; path = "Cocoa-rtl-sdr-Info.plist"; sourceTree = "<group>"; };
+		3C15992C154DAAFE0085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3C15992E154DAAFE0085A804 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3C159930154DAAFE0085A804 /* Cocoa-rtl-sdr-Prefix.pch */ = {isa = PBXFileReference; path = "Cocoa-rtl-sdr-Prefix.pch"; sourceTree = "<group>"; };
+		3C159932154DAAFE0085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		3C159934154DAAFE0085A804 /* CRTLAppDelegate.h */ = {isa = PBXFileReference; path = CRTLAppDelegate.h; sourceTree = "<group>"; };
+		3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRTLAppDelegate.m; sourceTree = "<group>"; };
+		3C159938154DAAFE0085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3C15991B154DAAFE0085A804 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C159923154DAAFE0085A804 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3C159913154DAAFE0085A804 = {
+			isa = PBXGroup;
+			children = (
+				3C159928154DAAFE0085A804 /* Cocoa-rtl-sdr */,
+				3C159921154DAAFE0085A804 /* Frameworks */,
+				3C15991F154DAAFE0085A804 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3C15991F154DAAFE0085A804 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3C15991E154DAAFE0085A804 /* Cocoa-rtl-sdr.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3C159921154DAAFE0085A804 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3C159922154DAAFE0085A804 /* Cocoa.framework */,
+				3C159924154DAAFE0085A804 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3C159924154DAAFE0085A804 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3C159925154DAAFE0085A804 /* AppKit.framework */,
+				3C159926154DAAFE0085A804 /* CoreData.framework */,
+				3C159927154DAAFE0085A804 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		3C159928154DAAFE0085A804 /* Cocoa-rtl-sdr */ = {
+			isa = PBXGroup;
+			children = (
+				3C159934154DAAFE0085A804 /* CRTLAppDelegate.h */,
+				3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */,
+				3C159937154DAAFE0085A804 /* MainMenu.xib */,
+				3C159929154DAAFE0085A804 /* Supporting Files */,
+			);
+			path = "Cocoa-rtl-sdr";
+			sourceTree = "<group>";
+		};
+		3C159929154DAAFE0085A804 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3C15992A154DAAFE0085A804 /* Cocoa-rtl-sdr-Info.plist */,
+				3C15992B154DAAFE0085A804 /* InfoPlist.strings */,
+				3C15992E154DAAFE0085A804 /* main.m */,
+				3C159930154DAAFE0085A804 /* Cocoa-rtl-sdr-Prefix.pch */,
+				3C159931154DAAFE0085A804 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3C15991D154DAAFE0085A804 /* Cocoa-rtl-sdr */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3C15993C154DAAFE0085A804 /* Build configuration list for PBXNativeTarget "Cocoa-rtl-sdr" */;
+			buildPhases = (
+				3C15991A154DAAFE0085A804 /* Sources */,
+				3C15991B154DAAFE0085A804 /* Frameworks */,
+				3C15991C154DAAFE0085A804 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Cocoa-rtl-sdr";
+			productName = "Cocoa-rtl-sdr";
+			productReference = 3C15991E154DAAFE0085A804 /* Cocoa-rtl-sdr.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3C159915154DAAFE0085A804 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Oregon State University (COAS)";
+			};
+			buildConfigurationList = 3C159918154DAAFE0085A804 /* Build configuration list for PBXProject "Cocoa-rtl-sdr" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 3C159913154DAAFE0085A804;
+			productRefGroup = 3C15991F154DAAFE0085A804 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3C15991D154DAAFE0085A804 /* Cocoa-rtl-sdr */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3C15991C154DAAFE0085A804 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C15992D154DAAFE0085A804 /* InfoPlist.strings in Resources */,
+				3C159933154DAAFE0085A804 /* Credits.rtf in Resources */,
+				3C159939154DAAFE0085A804 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3C15991A154DAAFE0085A804 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C15992F154DAAFE0085A804 /* main.m in Sources */,
+				3C159936154DAAFE0085A804 /* CRTLAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		3C15992B154DAAFE0085A804 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3C15992C154DAAFE0085A804 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		3C159931154DAAFE0085A804 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3C159932154DAAFE0085A804 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		3C159937154DAAFE0085A804 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3C159938154DAAFE0085A804 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3C15993A154DAAFE0085A804 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		3C15993B154DAAFE0085A804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		3C15993D154DAAFE0085A804 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Prefix.pch";
+				INFOPLIST_FILE = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		3C15993E154DAAFE0085A804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Prefix.pch";
+				INFOPLIST_FILE = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3C159918154DAAFE0085A804 /* Build configuration list for PBXProject "Cocoa-rtl-sdr" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3C15993A154DAAFE0085A804 /* Debug */,
+				3C15993B154DAAFE0085A804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3C15993C154DAAFE0085A804 /* Build configuration list for PBXNativeTarget "Cocoa-rtl-sdr" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3C15993D154DAAFE0085A804 /* Debug */,
+				3C15993E154DAAFE0085A804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3C159915154DAAFE0085A804 /* Project object */;
+}
