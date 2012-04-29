@@ -17,6 +17,16 @@
 		3C159959154DABC00085A804 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 3C159957154DABC00085A804 /* COPYING */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3C159982154DAEB10085A804 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3C159966154DAEB00085A804;
+			remoteInfo = "rtl-sdr";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		3C15991E154DAAFE0085A804 /* Cocoa-rtl-sdr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cocoa-rtl-sdr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C159922154DAAFE0085A804 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -33,14 +43,9 @@
 		3C159938154DAAFE0085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		3C15993F154DAB260085A804 /* Cocoa-rtl-sdr.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Cocoa-rtl-sdr.entitlements"; sourceTree = "<group>"; };
 		3C15994F154DABA80085A804 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		3C159950154DABA80085A804 /* rtl_tcp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rtl_tcp.c; sourceTree = "<group>"; };
-		3C159951154DABA80085A804 /* rtl-sdr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "rtl-sdr.c"; sourceTree = "<group>"; };
-		3C159952154DABA80085A804 /* tuner_e4000.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tuner_e4000.c; sourceTree = "<group>"; };
-		3C159953154DABA80085A804 /* tuner_fc0012.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tuner_fc0012.c; sourceTree = "<group>"; };
-		3C159954154DABA80085A804 /* tuner_fc0013.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tuner_fc0013.c; sourceTree = "<group>"; };
-		3C159955154DABA80085A804 /* tuner_fc2580.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tuner_fc2580.c; sourceTree = "<group>"; };
 		3C159956154DABC00085A804 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		3C159957154DABC00085A804 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "rtl-sdr.xcodeproj"; path = "rtl-sdr/rtl-sdr.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +63,7 @@
 		3C159913154DAAFE0085A804 = {
 			isa = PBXGroup;
 			children = (
+				3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */,
 				3C159928154DAAFE0085A804 /* Cocoa-rtl-sdr */,
 				3C159921154DAAFE0085A804 /* Frameworks */,
 				3C15991F154DAAFE0085A804 /* Products */,
@@ -122,14 +128,16 @@
 				3C159956154DABC00085A804 /* AUTHORS */,
 				3C159957154DABC00085A804 /* COPYING */,
 				3C15994F154DABA80085A804 /* main.c */,
-				3C159950154DABA80085A804 /* rtl_tcp.c */,
-				3C159951154DABA80085A804 /* rtl-sdr.c */,
-				3C159952154DABA80085A804 /* tuner_e4000.c */,
-				3C159953154DABA80085A804 /* tuner_fc0012.c */,
-				3C159954154DABA80085A804 /* tuner_fc0013.c */,
-				3C159955154DABA80085A804 /* tuner_fc2580.c */,
 			);
 			name = "New Group";
+			sourceTree = "<group>";
+		};
+		3C15997F154DAEB00085A804 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3C159983154DAEB10085A804 /* rtl-sdr.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,12 +179,28 @@
 			mainGroup = 3C159913154DAAFE0085A804;
 			productRefGroup = 3C15991F154DAAFE0085A804 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3C15997F154DAEB00085A804 /* Products */;
+					ProjectRef = 3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				3C15991D154DAAFE0085A804 /* Cocoa-rtl-sdr */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3C159983154DAEB10085A804 /* rtl-sdr.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = "rtl-sdr.framework";
+			remoteRef = 3C159982154DAEB10085A804 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3C15991C154DAAFE0085A804 /* Resources */ = {

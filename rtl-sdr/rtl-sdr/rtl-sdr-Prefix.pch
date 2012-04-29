@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'rtl-sdr' target in the 'rtl-sdr' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
