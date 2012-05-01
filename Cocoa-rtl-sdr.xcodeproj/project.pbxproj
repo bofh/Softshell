@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		3C159923154DAAFE0085A804 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C159922154DAAFE0085A804 /* Cocoa.framework */; };
 		3C15992D154DAAFE0085A804 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3C15992B154DAAFE0085A804 /* InfoPlist.strings */; };
-		3C15992F154DAAFE0085A804 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C15992E154DAAFE0085A804 /* main.m */; };
 		3C159933154DAAFE0085A804 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3C159931154DAAFE0085A804 /* Credits.rtf */; };
 		3C159936154DAAFE0085A804 /* CRTLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */; };
 		3C159939154DAAFE0085A804 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C159937154DAAFE0085A804 /* MainMenu.xib */; };
 		3C159958154DABC00085A804 /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = 3C159956154DABC00085A804 /* AUTHORS */; };
 		3C159959154DABC00085A804 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 3C159957154DABC00085A804 /* COPYING */; };
+		3C1599A1154DB8FA0085A804 /* rtl-sdr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C159983154DAEB10085A804 /* rtl-sdr.framework */; };
+		3C83ADD9154E281B009CE93C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C15992E154DAAFE0085A804 /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C159923154DAAFE0085A804 /* Cocoa.framework in Frameworks */,
+				3C1599A1154DB8FA0085A804 /* rtl-sdr.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,7 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C15992F154DAAFE0085A804 /* main.m in Sources */,
+				3C83ADD9154E281B009CE93C /* main.m in Sources */,
 				3C159936154DAAFE0085A804 /* CRTLAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -306,10 +308,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Cocoa-rtl-sdr/Cocoa-rtl-sdr.entitlements";
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Prefix.pch";
+				HEADER_SEARCH_PATHS = "/opt/local/include/libusb-1.0";
 				INFOPLIST_FILE = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Info.plist";
+				LIBRARY_SEARCH_PATHS = /opt/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -320,10 +323,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Cocoa-rtl-sdr/Cocoa-rtl-sdr.entitlements";
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Prefix.pch";
+				HEADER_SEARCH_PATHS = "/opt/local/include/libusb-1.0";
 				INFOPLIST_FILE = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Info.plist";
+				LIBRARY_SEARCH_PATHS = /opt/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -349,6 +353,7 @@
 				3C15993E154DAAFE0085A804 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

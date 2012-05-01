@@ -9,14 +9,26 @@
 /* Begin PBXBuildFile section */
 		3C15996A154DAEB00085A804 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C159969154DAEB00085A804 /* Cocoa.framework */; };
 		3C159974154DAEB00085A804 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3C159972154DAEB00085A804 /* InfoPlist.strings */; };
-		3C159978154DAEB00085A804 /* rtl_sdr.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C159977154DAEB00085A804 /* rtl_sdr.m */; };
-		3C15998C154DAF4D0085A804 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C159985154DAF4D0085A804 /* main.c */; };
-		3C15998D154DAF4D0085A804 /* rtl_tcp.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C159986154DAF4D0085A804 /* rtl_tcp.c */; };
-		3C15998E154DAF4D0085A804 /* rtl-sdr.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C159987154DAF4D0085A804 /* rtl-sdr.c */; };
-		3C15998F154DAF4D0085A804 /* tuner_e4000.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C159988154DAF4D0085A804 /* tuner_e4000.c */; };
-		3C159990154DAF4D0085A804 /* tuner_fc0012.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C159989154DAF4D0085A804 /* tuner_fc0012.c */; };
-		3C159991154DAF4D0085A804 /* tuner_fc0013.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C15998A154DAF4D0085A804 /* tuner_fc0013.c */; };
-		3C159992154DAF4D0085A804 /* tuner_fc2580.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C15998B154DAF4D0085A804 /* tuner_fc2580.c */; };
+		3C159978154DAEB00085A804 /* RTLSDRDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C159977154DAEB00085A804 /* RTLSDRDevice.m */; };
+		3C15999A154DB17C0085A804 /* rtl-sdr_export.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C159993154DB17C0085A804 /* rtl-sdr_export.h */; };
+		3C15999B154DB17C0085A804 /* rtl-sdr-osmocom.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C159994154DB17C0085A804 /* rtl-sdr-osmocom.h */; };
+		3C15999C154DB17C0085A804 /* rtlsdr_i2c.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C159995154DB17C0085A804 /* rtlsdr_i2c.h */; };
+		3C15999D154DB17C0085A804 /* tuner_e4000.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C159996154DB17C0085A804 /* tuner_e4000.h */; };
+		3C15999E154DB17C0085A804 /* tuner_fc0012.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C159997154DB17C0085A804 /* tuner_fc0012.h */; };
+		3C15999F154DB17C0085A804 /* tuner_fc0013.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C159998154DB17C0085A804 /* tuner_fc0013.h */; };
+		3C1599A0154DB17C0085A804 /* tuner_fc2580.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C159999154DB17C0085A804 /* tuner_fc2580.h */; };
+		3C1599A4154DBAFD0085A804 /* RTLSDRTuner.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C1599A2154DBAFD0085A804 /* RTLSDRTuner.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C1599A5154DBAFD0085A804 /* RTLSDRTuner.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1599A3154DBAFD0085A804 /* RTLSDRTuner.m */; };
+		3C83ADD7154DD52B009CE93C /* libusb-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C83ADD6154DD52B009CE93C /* libusb-1.0.0.dylib */; };
+		3C83ADD8154E2601009CE93C /* RTLSDRDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C159976154DAEB00085A804 /* RTLSDRDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3CCB79CE154F843700EB0A43 /* RTLSDRTuner_e4000.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCB79CC154F843700EB0A43 /* RTLSDRTuner_e4000.h */; };
+		3CCB79CF154F843700EB0A43 /* RTLSDRTuner_e4000.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB79CD154F843700EB0A43 /* RTLSDRTuner_e4000.m */; };
+		3CCB79D2154F853A00EB0A43 /* RTLSDRTuner_fc0012.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCB79D0154F853A00EB0A43 /* RTLSDRTuner_fc0012.h */; };
+		3CCB79D3154F853A00EB0A43 /* RTLSDRTuner_fc0012.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB79D1154F853A00EB0A43 /* RTLSDRTuner_fc0012.m */; };
+		3CCB79D6154F856200EB0A43 /* RTLSDRTuner_fc0013.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCB79D4154F856200EB0A43 /* RTLSDRTuner_fc0013.h */; };
+		3CCB79D7154F856200EB0A43 /* RTLSDRTuner_fc0013.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB79D5154F856200EB0A43 /* RTLSDRTuner_fc0013.m */; };
+		3CCB79DA154F857800EB0A43 /* RTLSDRTuner_fc2580.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCB79D8154F857800EB0A43 /* RTLSDRTuner_fc2580.h */; };
+		3CCB79DB154F857800EB0A43 /* RTLSDRTuner_fc2580.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB79D9154F857800EB0A43 /* RTLSDRTuner_fc2580.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +40,8 @@
 		3C159971154DAEB00085A804 /* rtl-sdr-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "rtl-sdr-Info.plist"; sourceTree = "<group>"; };
 		3C159973154DAEB00085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3C159975154DAEB00085A804 /* rtl-sdr-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rtl-sdr-Prefix.pch"; sourceTree = "<group>"; };
-		3C159976154DAEB00085A804 /* rtl_sdr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rtl_sdr.h; sourceTree = "<group>"; };
-		3C159977154DAEB00085A804 /* rtl_sdr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rtl_sdr.m; sourceTree = "<group>"; };
+		3C159976154DAEB00085A804 /* RTLSDRDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTLSDRDevice.h; sourceTree = "<group>"; };
+		3C159977154DAEB00085A804 /* RTLSDRDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTLSDRDevice.m; sourceTree = "<group>"; };
 		3C159985154DAF4D0085A804 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		3C159986154DAF4D0085A804 /* rtl_tcp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rtl_tcp.c; sourceTree = "<group>"; };
 		3C159987154DAF4D0085A804 /* rtl-sdr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtl-sdr.c"; sourceTree = "<group>"; };
@@ -37,6 +49,25 @@
 		3C159989154DAF4D0085A804 /* tuner_fc0012.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tuner_fc0012.c; sourceTree = "<group>"; };
 		3C15998A154DAF4D0085A804 /* tuner_fc0013.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tuner_fc0013.c; sourceTree = "<group>"; };
 		3C15998B154DAF4D0085A804 /* tuner_fc2580.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tuner_fc2580.c; sourceTree = "<group>"; };
+		3C159993154DB17C0085A804 /* rtl-sdr_export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rtl-sdr_export.h"; sourceTree = "<group>"; };
+		3C159994154DB17C0085A804 /* rtl-sdr-osmocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rtl-sdr-osmocom.h"; sourceTree = "<group>"; };
+		3C159995154DB17C0085A804 /* rtlsdr_i2c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtlsdr_i2c.h; sourceTree = "<group>"; };
+		3C159996154DB17C0085A804 /* tuner_e4000.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuner_e4000.h; sourceTree = "<group>"; };
+		3C159997154DB17C0085A804 /* tuner_fc0012.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuner_fc0012.h; sourceTree = "<group>"; };
+		3C159998154DB17C0085A804 /* tuner_fc0013.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuner_fc0013.h; sourceTree = "<group>"; };
+		3C159999154DB17C0085A804 /* tuner_fc2580.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tuner_fc2580.h; sourceTree = "<group>"; };
+		3C1599A2154DBAFD0085A804 /* RTLSDRTuner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTLSDRTuner.h; sourceTree = "<group>"; };
+		3C1599A3154DBAFD0085A804 /* RTLSDRTuner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTLSDRTuner.m; sourceTree = "<group>"; };
+		3C83ADD4154DD4DA009CE93C /* libusb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libusb.h; sourceTree = "<group>"; };
+		3C83ADD6154DD52B009CE93C /* libusb-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libusb-1.0.0.dylib"; path = "../../lib/libusb-1.0.0.dylib"; sourceTree = "<group>"; };
+		3CCB79CC154F843700EB0A43 /* RTLSDRTuner_e4000.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTLSDRTuner_e4000.h; sourceTree = "<group>"; };
+		3CCB79CD154F843700EB0A43 /* RTLSDRTuner_e4000.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTLSDRTuner_e4000.m; sourceTree = "<group>"; };
+		3CCB79D0154F853A00EB0A43 /* RTLSDRTuner_fc0012.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTLSDRTuner_fc0012.h; sourceTree = "<group>"; };
+		3CCB79D1154F853A00EB0A43 /* RTLSDRTuner_fc0012.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTLSDRTuner_fc0012.m; sourceTree = "<group>"; };
+		3CCB79D4154F856200EB0A43 /* RTLSDRTuner_fc0013.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTLSDRTuner_fc0013.h; sourceTree = "<group>"; };
+		3CCB79D5154F856200EB0A43 /* RTLSDRTuner_fc0013.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTLSDRTuner_fc0013.m; sourceTree = "<group>"; };
+		3CCB79D8154F857800EB0A43 /* RTLSDRTuner_fc2580.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTLSDRTuner_fc2580.h; sourceTree = "<group>"; };
+		3CCB79D9154F857800EB0A43 /* RTLSDRTuner_fc2580.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTLSDRTuner_fc2580.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C83ADD7154DD52B009CE93C /* libusb-1.0.0.dylib in Frameworks */,
 				3C15996A154DAEB00085A804 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,8 +123,9 @@
 			isa = PBXGroup;
 			children = (
 				3C159984154DAEDC0085A804 /* osmocom-sources */,
-				3C159976154DAEB00085A804 /* rtl_sdr.h */,
-				3C159977154DAEB00085A804 /* rtl_sdr.m */,
+				3C159976154DAEB00085A804 /* RTLSDRDevice.h */,
+				3C159977154DAEB00085A804 /* RTLSDRDevice.m */,
+				3CCB79CA154F840100EB0A43 /* Tuners */,
 				3C159970154DAEB00085A804 /* Supporting Files */,
 			);
 			path = "rtl-sdr";
@@ -101,6 +134,7 @@
 		3C159970154DAEB00085A804 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3C83ADD3154DD4DA009CE93C /* libusb-1.0 */,
 				3C159971154DAEB00085A804 /* rtl-sdr-Info.plist */,
 				3C159972154DAEB00085A804 /* InfoPlist.strings */,
 				3C159975154DAEB00085A804 /* rtl-sdr-Prefix.pch */,
@@ -111,6 +145,13 @@
 		3C159984154DAEDC0085A804 /* osmocom-sources */ = {
 			isa = PBXGroup;
 			children = (
+				3C159993154DB17C0085A804 /* rtl-sdr_export.h */,
+				3C159994154DB17C0085A804 /* rtl-sdr-osmocom.h */,
+				3C159995154DB17C0085A804 /* rtlsdr_i2c.h */,
+				3C159996154DB17C0085A804 /* tuner_e4000.h */,
+				3C159997154DB17C0085A804 /* tuner_fc0012.h */,
+				3C159998154DB17C0085A804 /* tuner_fc0013.h */,
+				3C159999154DB17C0085A804 /* tuner_fc2580.h */,
 				3C159985154DAF4D0085A804 /* main.c */,
 				3C159986154DAF4D0085A804 /* rtl_tcp.c */,
 				3C159987154DAF4D0085A804 /* rtl-sdr.c */,
@@ -122,6 +163,33 @@
 			name = "osmocom-sources";
 			sourceTree = "<group>";
 		};
+		3C83ADD3154DD4DA009CE93C /* libusb-1.0 */ = {
+			isa = PBXGroup;
+			children = (
+				3C83ADD6154DD52B009CE93C /* libusb-1.0.0.dylib */,
+				3C83ADD4154DD4DA009CE93C /* libusb.h */,
+			);
+			name = "libusb-1.0";
+			path = "/opt/local/include/libusb-1.0";
+			sourceTree = "<absolute>";
+		};
+		3CCB79CA154F840100EB0A43 /* Tuners */ = {
+			isa = PBXGroup;
+			children = (
+				3C1599A2154DBAFD0085A804 /* RTLSDRTuner.h */,
+				3C1599A3154DBAFD0085A804 /* RTLSDRTuner.m */,
+				3CCB79CC154F843700EB0A43 /* RTLSDRTuner_e4000.h */,
+				3CCB79CD154F843700EB0A43 /* RTLSDRTuner_e4000.m */,
+				3CCB79D0154F853A00EB0A43 /* RTLSDRTuner_fc0012.h */,
+				3CCB79D1154F853A00EB0A43 /* RTLSDRTuner_fc0012.m */,
+				3CCB79D4154F856200EB0A43 /* RTLSDRTuner_fc0013.h */,
+				3CCB79D5154F856200EB0A43 /* RTLSDRTuner_fc0013.m */,
+				3CCB79D8154F857800EB0A43 /* RTLSDRTuner_fc2580.h */,
+				3CCB79D9154F857800EB0A43 /* RTLSDRTuner_fc2580.m */,
+			);
+			name = Tuners;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -129,6 +197,19 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C83ADD8154E2601009CE93C /* RTLSDRDevice.h in Headers */,
+				3C1599A4154DBAFD0085A804 /* RTLSDRTuner.h in Headers */,
+				3C15999A154DB17C0085A804 /* rtl-sdr_export.h in Headers */,
+				3C15999B154DB17C0085A804 /* rtl-sdr-osmocom.h in Headers */,
+				3C15999C154DB17C0085A804 /* rtlsdr_i2c.h in Headers */,
+				3C15999D154DB17C0085A804 /* tuner_e4000.h in Headers */,
+				3C15999E154DB17C0085A804 /* tuner_fc0012.h in Headers */,
+				3C15999F154DB17C0085A804 /* tuner_fc0013.h in Headers */,
+				3C1599A0154DB17C0085A804 /* tuner_fc2580.h in Headers */,
+				3CCB79CE154F843700EB0A43 /* RTLSDRTuner_e4000.h in Headers */,
+				3CCB79D2154F853A00EB0A43 /* RTLSDRTuner_fc0012.h in Headers */,
+				3CCB79D6154F856200EB0A43 /* RTLSDRTuner_fc0013.h in Headers */,
+				3CCB79DA154F857800EB0A43 /* RTLSDRTuner_fc2580.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,14 +276,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C159978154DAEB00085A804 /* rtl_sdr.m in Sources */,
-				3C15998C154DAF4D0085A804 /* main.c in Sources */,
-				3C15998D154DAF4D0085A804 /* rtl_tcp.c in Sources */,
-				3C15998E154DAF4D0085A804 /* rtl-sdr.c in Sources */,
-				3C15998F154DAF4D0085A804 /* tuner_e4000.c in Sources */,
-				3C159990154DAF4D0085A804 /* tuner_fc0012.c in Sources */,
-				3C159991154DAF4D0085A804 /* tuner_fc0013.c in Sources */,
-				3C159992154DAF4D0085A804 /* tuner_fc2580.c in Sources */,
+				3C159978154DAEB00085A804 /* RTLSDRDevice.m in Sources */,
+				3C1599A5154DBAFD0085A804 /* RTLSDRTuner.m in Sources */,
+				3CCB79CF154F843700EB0A43 /* RTLSDRTuner_e4000.m in Sources */,
+				3CCB79D3154F853A00EB0A43 /* RTLSDRTuner_fc0012.m in Sources */,
+				3CCB79D7154F856200EB0A43 /* RTLSDRTuner_fc0013.m in Sources */,
+				3CCB79DB154F857800EB0A43 /* RTLSDRTuner_fc2580.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,7 +352,12 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "rtl-sdr/rtl-sdr-Prefix.pch";
+				HEADER_SEARCH_PATHS = "/opt/local/include/libusb-1.0";
 				INFOPLIST_FILE = "rtl-sdr/rtl-sdr-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -287,7 +371,12 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "rtl-sdr/rtl-sdr-Prefix.pch";
+				HEADER_SEARCH_PATHS = "/opt/local/include/libusb-1.0";
 				INFOPLIST_FILE = "rtl-sdr/rtl-sdr-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -312,6 +401,7 @@
 				3C15997D154DAEB00085A804 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -11,6 +11,8 @@
 @implementation CRTLAppDelegate
 
 @synthesize window = _window;
+@synthesize deviceList;
+@synthesize deviceComboBox;
 
 - (void)dealloc
 {
@@ -19,7 +21,22 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    deviceList = [RTLSDRDevice deviceList];
+    [deviceComboBox bind:NSContentBinding toObject:self
+             withKeyPath:@"deviceList" options:nil];
+    [deviceComboBox selectItemAtIndex:0];
+}
+
+- (IBAction)openDevice:(id)sender
+{
+    NSInteger index = [deviceComboBox indexOfSelectedItem];
+    device = [[RTLSDRDevice alloc] initWithDeviceIndex:index];
+    
+    if (device == nil) {
+        NSLog(@"Unable to open device");
+    }
+    
+    
 }
 
 @end
