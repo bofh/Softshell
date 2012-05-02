@@ -8,6 +8,10 @@
 
 #import "RTLSDRTuner.h"
 
+#define FC0013_I2C_ADDR		0xc6
+#define FC0013_CHECK_ADDR	0x00
+#define FC0013_CHECK_VAL	0xa3
+
 @interface RTLSDRTuner_fc0013 : RTLSDRTuner
 
 @end

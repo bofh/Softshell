@@ -107,5 +107,23 @@
 // These methods should only be called from within the library!
 - (void)setI2cRepeater:(bool)enabled;
 
+- (uint16_t)readAddress:(uint16_t)addr fromBlock:(uint8_t)block length:(uint8_t)bytes;
+- (void)writeValue:(uint16_t)value AtAddress:(uint16_t)addr InBlock:(uint8_t)block Length:(uint8_t)bytes;
+
+- (uint16_t)demodReadAddress:(uint16_t)addr fromPage:(uint8_t)page length:(uint8_t)bytes;
+- (void)demodWriteValue:(uint16_t)value AtAddress:(uint16_t)addr InPage:(uint8_t)page Length:(uint8_t)bytes;
+
+- (int)readArray:(uint8_t*)array fromAddress:(uint16_t)addr inBlock:(uint8_t)block length:(uint8_t)len;
+- (int)writeArray:(uint8_t *)array toAddress:(uint16_t)addr inBlock:(uint8_t)block length:(uint8_t)len;
+
+- (int)writeI2cRegister:(uint8_t)reg atAddress:(uint8_t)i2c_addr withValue:(uint8_t)val;
+- (uint8_t)readI2cRegister:(uint8_t)reg fromAddress:(uint8_t)i2c_addr;
+
+- (int)writeI2cAtAddress:(uint8_t)i2c_addr withBuffer:(uint8_t *)buffer length:(int)len;
+- (int)readI2cAtAddress:(uint8_t)i2c_addr withBuffer:(uint8_t *)buffer length:(int)len;
+
+- (void)setGpioBit:(uint8_t)gpio value:(int)value;
+- (void)setGpioOutput:(uint8_t)gpio;
+
 @end
 

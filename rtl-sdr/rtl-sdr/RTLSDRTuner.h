@@ -14,15 +14,17 @@
     RTLSDRDevice *device;
     
     double freq;
+    double xtal;
     
     NSUInteger gain;
     NSUInteger bandWidth;
 }
 
-+ (RTLSDRTuner *)createTuner;
++ (RTLSDRTuner *)createTunerForDevice:(RTLSDRDevice *)device;
 
 - (id)initWithDevice:(RTLSDRDevice *)dev;
 
+@property (readwrite) double xtal;
 @property (readwrite) double freq;
 @property (readwrite) NSUInteger gain;
 @property (readwrite) NSUInteger bandWidth;

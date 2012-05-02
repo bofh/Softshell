@@ -21,7 +21,7 @@
 
 #define CTRL_IN		(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_IN)
 #define CTRL_OUT	(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_OUT)
-#define CTRL_TIMEOUT	300
+#define CTRL_TIMEOUT	1000
 #define BULK_TIMEOUT	0
 
 typedef struct rtlsdr_dongle {
@@ -97,6 +97,20 @@ enum blocks {
 
 static NSArray *deviceList;
 static dispatch_once_t onceToken;
+
+NSString *stringFromUSBError(int errorValue)
+{
+    switch (errorValue) {
+        case LIBUSB_ERROR_TIMEOUT:
+            return @"Timeout";
+        case LIBUSB_ERROR_PIPE:
+            return @"Control request not supported";
+        case LIBUSB_ERROR_NO_DEVICE:
+            return @"Device disconnected";
+        default:
+            return @"Unknown error";
+    }
+}
 
 @implementation RTLSDRDevice
 
@@ -182,7 +196,7 @@ static dispatch_once_t onceToken;
                                 CTRL_TIMEOUT);
     
 	if (r < 0)
-		NSLog(@"%s failed with %d\n", __FUNCTION__, r);
+		NSLog(@"%s failed: %@", __FUNCTION__, stringFromUSBError(r));
     
 	reg = (data[1] << 8) | data[0];
     
@@ -210,7 +224,7 @@ static dispatch_once_t onceToken;
 	r = libusb_control_transfer(devh, CTRL_OUT, 0, addr, index, data, bytes, CTRL_TIMEOUT);
     
 	if (r < 0)
-		NSLog(@"%s failed with %d\n", __FUNCTION__, r);
+		NSLog(@"%s failed: %@", __FUNCTION__, stringFromUSBError(r));
 }
 
 - (uint16_t)demodReadAddress:(uint16_t)addr
@@ -225,15 +239,17 @@ static dispatch_once_t onceToken;
 	uint16_t reg;
 	addr = (addr << 8) | 0x20;
     
-	r = libusb_control_transfer(devh, CTRL_IN, 0,
+	r = libusb_control_transfer(devh, CTRL_IN, LIBUSB_REQUEST_GET_STATUS,
                                 addr, index, data, bytes,
                                 CTRL_TIMEOUT);
     
-	if (r < 0)
-		fprintf(stderr, "%s failed with %d\n", __FUNCTION__, r);
+    NSLog(@"Demod read address 0x%x, index %d, data 0x%x, length %d\n", addr, index, *(uint16_t *)data, bytes);
+	
+    if (r < 0)
+		NSLog(@"%s failed: %@", __FUNCTION__, stringFromUSBError(r));
     
 	reg = (data[1] << 8) | data[0];
-    
+
 	return reg;
     // END OSMOCOM CODE
 }
@@ -257,13 +273,15 @@ static dispatch_once_t onceToken;
     
 	data[1] = value & 0xff;
     
-	r = libusb_control_transfer(devh, CTRL_OUT, 0,
+	r = libusb_control_transfer(devh, CTRL_OUT, LIBUSB_REQUEST_GET_STATUS,
                                 addr, index, data, bytes,
                                 CTRL_TIMEOUT);
-    
-	if (r < 0)
-		fprintf(stderr, "%s failed with %d\n", __FUNCTION__, r);
-    
+
+    NSLog(@"Demod write address 0x%x, index %d, data 0x%x, length %d\n", addr, index, *(uint16_t *)data, bytes);
+
+//	if (r < 0)
+//		NSLog(@"%s failed: %@", __FUNCTION__, stringFromUSBError(r));
+
     [self demodReadAddress:0x01
                   fromPage:0x0a
                     length:1];
@@ -348,6 +366,37 @@ static dispatch_once_t onceToken;
     return [self readArray:buffer fromAddress:addr inBlock:IICB length:len];
 }
 
+- (void)setGpioBit:(uint8_t)gpio value:(int)value
+{
+	uint8_t r;
+    
+	gpio = 1 << gpio;
+
+//	r = rtlsdr_read_reg(dev, SYSB, GPO, 1);
+    r = [self readAddress:GPO fromBlock:SYSB length:1];
+	r = value ? (r | gpio) : (r & ~gpio);
+//	rtlsdr_write_reg(dev, SYSB, GPO, r, 1);
+    [self writeValue:r AtAddress:GPO InBlock:SYSB Length:1];
+}
+
+- (void)setGpioOutput:(uint8_t)gpio
+{
+	int r;
+	gpio = 1 << gpio;
+    
+//	r = rtlsdr_read_reg(dev, SYSB, GPD, 1);
+    r = [self readAddress:GPD fromBlock:SYSB length:1];
+
+//	rtlsdr_write_reg(dev, SYSB, GPO, r & ~gpio, 1);
+    [self writeValue:r & ~gpio AtAddress:GPO InBlock:SYSB Length:1];
+
+//	r = rtlsdr_read_reg(dev, SYSB, GPOE, 1);
+    r = [self readAddress:GPOE fromBlock:SYSB length:1];
+
+//	rtlsdr_write_reg(dev, SYSB, GPOE, r | gpio, 1);
+    [self writeValue:r | gpio AtAddress:GPOE InBlock:SYSB Length:1];
+}
+
 #pragma mark -
 #pragma mark Class initialization/deallocation
 - (void)initBaseband
@@ -380,49 +429,49 @@ static dispatch_once_t onceToken;
     
 	/* reset demod (bit 3, soft_rst) */
 //	rtlsdr_demod_write_reg(dev, 1, 0x01, 0x14, 1);
-    [self writeValue:0x14 AtAddress:0x01 InBlock:1 Length:1];
+    [self demodWriteValue:0x14 AtAddress:0x01 InPage:1 Length:1];
 //	rtlsdr_demod_write_reg(dev, 1, 0x01, 0x10, 1);
-    [self writeValue:0x10 AtAddress:0x01 InBlock:1 Length:1];
+    [self demodWriteValue:0x10 AtAddress:0x01 InPage:1 Length:1];
     
 	/* disable spectrum inversion and adjacent channel rejection */
 //	rtlsdr_demod_write_reg(dev, 1, 0x15, 0x00, 1);
-    [self writeValue:0x00   AtAddress:0x15 InBlock:1 Length:1];
+    [self demodWriteValue:0x00   AtAddress:0x15 InPage:1 Length:1];
 //	rtlsdr_demod_write_reg(dev, 1, 0x16, 0x0000, 2);
-    [self writeValue:0x0000 AtAddress:0x16 InBlock:1 Length:2];
+    [self demodWriteValue:0x0000 AtAddress:0x16 InPage:1 Length:2];
     
 	/* set IF-frequency to 0 Hz */
 //	rtlsdr_demod_write_reg(dev, 1, 0x19, 0x0000, 2);
-    [self writeValue:0x0000 AtAddress:0x19 InBlock:1 Length:2];
+    [self demodWriteValue:0x0000 AtAddress:0x19 InPage:1 Length:2];
     
 	/* set FIR coefficients */
 	for (i = 0; i < sizeof (fir_coeff); i++) {
 //		rtlsdr_demod_write_reg(dev, 1, 0x1c + i, fir_coeff[i], 1);
-        [self writeValue:fir_coeff[i] AtAddress:0x1c InBlock:1 Length:1];
+        [self demodWriteValue:fir_coeff[i] AtAddress:0x1c InPage:1 Length:1];
     }
     
 //	rtlsdr_demod_write_reg(dev, 0, 0x19, 0x25, 1);
-    [self writeValue:0x25 AtAddress:0x19 InBlock:0 Length:1];
+    [self demodWriteValue:0x25 AtAddress:0x19 InPage:0 Length:1];
 
 	/* init FSM state-holding register */
 //	rtlsdr_demod_write_reg(dev, 1, 0x93, 0xf0, 1);
-    [self writeValue:0xf0 AtAddress:0x93 InBlock:1 Length:1];
+    [self demodWriteValue:0xf0 AtAddress:0x93 InPage:1 Length:1];
     
 	/* disable AGC (en_dagc, bit 0) */
 //	rtlsdr_demod_write_reg(dev, 1, 0x11, 0x00, 1);
-    [self writeValue:0x00 AtAddress:0x11 InBlock:1 Length:1];
+    [self demodWriteValue:0x00 AtAddress:0x11 InPage:1 Length:1];
     
 	/* disable PID filter (enable_PID = 0) */
 //	rtlsdr_demod_write_reg(dev, 0, 0x61, 0x60, 1);
-    [self writeValue:0x60 AtAddress:0x61 InBlock:0 Length:1];
+    [self demodWriteValue:0x60 AtAddress:0x61 InPage:0 Length:1];
     
 	/* opt_adc_iq = 0, default ADC_I/ADC_Q datapath */
 //	rtlsdr_demod_write_reg(dev, 0, 0x06, 0x80, 1);
-    [self writeValue:0x80 AtAddress:0x06 InBlock:0 Length:1];
+    [self demodWriteValue:0x80 AtAddress:0x06 InPage:0 Length:1];
     
 	/* Enable Zero-IF mode (en_bbin bit), DC cancellation (en_dc_est),
 	 * IQ estimation/compensation (en_iq_comp, en_iq_est) */
 //	rtlsdr_demod_write_reg(dev, 1, 0xb1, 0x1b, 1);
-    [self writeValue:0x1b AtAddress:0xb1 InBlock:1 Length:1];
+    [self demodWriteValue:0x1b AtAddress:0xb1 InPage:1 Length:1];
 }
 
 - (id)init
@@ -446,7 +495,6 @@ static dispatch_once_t onceToken;
         libusb_device *device = NULL;
         uint32_t device_count = 0;
         struct libusb_device_descriptor dd;
-        uint8_t reg;
         ssize_t cnt;
         
         libusb_init(&context);
@@ -471,92 +519,54 @@ static dispatch_once_t onceToken;
         }
         
         if (!device) {
-            goto err;
+            libusb_free_device_list(list, 0);
+            libusb_exit(context);
+            [self release];
+            self = nil;
+            return self;
+        }
+
+        r = libusb_open(device, &devh);
+        if (r < 0) {
+            NSLog(@"Unable to open device (usb_open): %d", r);
+            libusb_free_device_list(list, 0);
+            libusb_exit(context);
+            [self release];
+            self = nil;
+            return self;
         }
         
-        r = libusb_open(device, &devh);
         libusb_free_device_list(list, 0);
 
-        if (r < 0) {
-            NSLog(@"Unable to open device (usb_open)");
-            goto err;
-        }
-        
         r = libusb_claim_interface(devh, 0);
         if (r < 0) {
             NSLog(@"usb_claim_interface error %d\n", r);
-            goto err;
+            libusb_exit(context);
+            [self release];
+            self = nil;
+            return self;
         }
         
         rtlXtal = DEF_RTL_XTAL_FREQ;
         
         [self initBaseband];
         
-        /* Probe tuners */
-        [self setI2cRepeater:YES];
+        // Have the tuner class detect the type and create
+        // a class instance for it.
+        tuner = [RTLSDRTuner createTunerForDevice:self];
+        
+        if (tuner == nil) {
+            libusb_exit(context);
+            free(devh);
+            [self release];
+            self = nil;
+            return self;
+        }
 
-//      reg = rtlsdr_i2c_read_reg(dev, E4K_I2C_ADDR, E4K_CHECK_ADDR);
-        reg = [self readI2cRegister:E4K_CHECK_ADDR fromAddress:E4K_I2C_ADDR];
-        if (reg == E4K_CHECK_VAL) {
-            fprintf(stderr, "Found Elonics E4000 tuner\n");
-            dev->tuner = &tuners[RTLSDR_TUNER_E4000];
-            goto found;
-        }
-        
-        reg = rtlsdr_i2c_read_reg(dev, FC0013_I2C_ADDR, FC0013_CHECK_ADDR);
-        if (reg == FC0013_CHECK_VAL) {
-            fprintf(stderr, "Found Fitipower FC0013 tuner\n");
-            dev->tuner = &tuners[RTLSDR_TUNER_FC0013];
-            goto found;
-        }
-        
-        /* initialise GPIOs */
-        rtlsdr_set_gpio_output(dev, 5);
-        
-        /* reset tuner before probing */
-        rtlsdr_set_gpio_bit(dev, 5, 1);
-        rtlsdr_set_gpio_bit(dev, 5, 0);
-        
-        reg = rtlsdr_i2c_read_reg(dev, FC2580_I2C_ADDR, FC2580_CHECK_ADDR);
-        if ((reg & 0x7f) == FC2580_CHECK_VAL) {
-            fprintf(stderr, "Found FCI 2580 tuner\n");
-            dev->tuner = &tuners[RTLSDR_TUNER_FC2580];
-            goto found;
-        }
-        
-        reg = rtlsdr_i2c_read_reg(dev, FC0012_I2C_ADDR, FC0012_CHECK_ADDR);
-        if (reg == FC0012_CHECK_VAL) {
-            fprintf(stderr, "Found Fitipower FC0012 tuner\n");
-            rtlsdr_set_gpio_output(dev, 6);
-            dev->tuner = &tuners[RTLSDR_TUNER_FC0012];
-            goto found;
-        }
-        
-    found:
-        if (dev->tuner) {
-            dev->tun_xtal = dev->rtl_xtal;
-            
-            if (dev->tuner->init)
-                r = dev->tuner->init(dev);
-        }
-        
-        rtlsdr_set_i2c_repeater(dev, 0);
-        
-        *out_dev = dev;
-        
-        return 0;
-    err:
-        if (dev) {
-            if (dev->ctx)
-                libusb_exit(dev->ctx);
-            
-            free(dev);
-        }
-        
-        return r;
+        [tuner setXtal:rtlXtal];
     }
     
-    return nil;
+    return self;
 }
 
 #pragma mark -
