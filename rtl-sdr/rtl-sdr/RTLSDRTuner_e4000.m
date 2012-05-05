@@ -10,4 +10,9 @@
 
 @implementation RTLSDRTuner_e4000
 
+- (NSString *)tunerType
+{
+    return @"Elonics E4000";
+}
+
 @end

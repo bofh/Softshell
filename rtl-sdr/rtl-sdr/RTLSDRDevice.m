@@ -19,8 +19,8 @@
 
 #define MAX_SAMP_RATE		3200000
 
-#define CTRL_IN		(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_IN)
-#define CTRL_OUT	(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_OUT)
+//#define CTRL_IN		(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_IN)
+//#define CTRL_OUT	(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_OUT)
 #define CTRL_TIMEOUT	1000
 #define BULK_TIMEOUT	0
 
@@ -41,19 +41,19 @@ static rtlsdr_dongle_t known_devices[] = {
 	{ 0x0ccd, 0x00d3, "Terratec Cinergy T Stick RC (Rev.3)" },
 	{ 0x0ccd, 0x00d7, "Terratec T Stick PLUS" },
 	{ 0x0ccd, 0x00e0, "Terratec NOXON DAB/DAB+ USB dongle (rev 2)" },
-	{ 0x185b, 0x0620, "Compro Videomate U620F"},
-	{ 0x185b, 0x0650, "Compro Videomate U650F"},
-	{ 0x1f4d, 0xb803, "GTek T803" },
-	{ 0x1f4d, 0xc803, "Lifeview LV5TDeluxe" },
 	{ 0x1b80, 0xd3a4, "Twintech UT-40" },
-	{ 0x1d19, 0x1101, "Dexatek DK DVB-T Dongle (Logilink VG0002A)" },
-	{ 0x1d19, 0x1102, "Dexatek DK DVB-T Dongle (MSI DigiVox mini II V3.0)" },
-	{ 0x1d19, 0x1103, "Dexatek Technology Ltd. DK 5217 DVB-T Dongle" },
-	{ 0x0458, 0x707f, "Genius TVGo DVB-T03 USB dongle (Ver. B)" },
 	{ 0x1b80, 0xd393, "GIGABYTE GT-U7300" },
 	{ 0x1b80, 0xd394, "DIKOM USB-DVBT HD" },
 	{ 0x1b80, 0xd395, "Peak 102569AGPK" },
 	{ 0x1b80, 0xd39d, "SVEON STV20 DVB-T USB & FM" },
+	{ 0x1d19, 0x1101, "Dexatek DK DVB-T Dongle (Logilink VG0002A)" },
+	{ 0x1d19, 0x1102, "Dexatek DK DVB-T Dongle (MSI DigiVox mini II V3.0)" },
+	{ 0x1d19, 0x1103, "Dexatek Technology Ltd. DK 5217 DVB-T Dongle" },
+	{ 0x185b, 0x0620, "Compro Videomate U620F"},
+	{ 0x185b, 0x0650, "Compro Videomate U650F"},
+	{ 0x1f4d, 0xb803, "GTek T803" },
+	{ 0x1f4d, 0xc803, "Lifeview LV5TDeluxe" },
+	{ 0x0458, 0x707f, "Genius TVGo DVB-T03 USB dongle (Ver. B)" },
 };
 
 enum usb_reg {
@@ -98,21 +98,23 @@ enum blocks {
 static NSArray *deviceList;
 static dispatch_once_t onceToken;
 
-NSString *stringFromUSBError(int errorValue)
-{
-    switch (errorValue) {
-        case LIBUSB_ERROR_TIMEOUT:
-            return @"Timeout";
-        case LIBUSB_ERROR_PIPE:
-            return @"Control request not supported";
-        case LIBUSB_ERROR_NO_DEVICE:
-            return @"Device disconnected";
-        default:
-            return @"Unknown error";
-    }
-}
+//NSString *stringFromUSBError(int errorValue)
+//{
+//    switch (errorValue) {
+//        case LIBUSB_ERROR_TIMEOUT:
+//            return @"Timeout";
+//        case LIBUSB_ERROR_PIPE:
+//            return @"Control request not supported";
+//        case LIBUSB_ERROR_NO_DEVICE:
+//            return @"Device disconnected";
+//        default:
+//            return @"Unknown error";
+//    }
+//}
 
 @implementation RTLSDRDevice
+
+@synthesize tuner;
 
 #pragma mark -
 #pragma mark Device searching and enumeration
@@ -140,41 +142,110 @@ NSString *stringFromUSBError(int errorValue)
 
 +(NSArray *)deviceList
 {
-    // Devices are only enumerated once!
+    // Enumerate devices once at the start, after just return the array.
     dispatch_once(&onceToken, ^{
+        kern_return_t kretval;
         NSMutableArray *tempDeviceList = [[NSMutableArray alloc] init];
+
+        // Create matching dictionaries for all USB devices
+        CFMutableDictionaryRef usbMatchingDictionary = nil;
+        io_iterator_t iterator;
+        usbMatchingDictionary = IOServiceMatching(kIOUSBDeviceClassName);
+        kretval = IOServiceGetMatchingServices(kIOMasterPortDefault, 
+                                               usbMatchingDictionary, 
+                                               &iterator);
         
-        int i;
-        libusb_context *ctx;
-        libusb_device **list;
-        struct libusb_device_descriptor dd;
-        
-        ssize_t cnt;
-        
-        libusb_init(&ctx);
-        
-        cnt = libusb_get_device_list(ctx, &list);
-        
-        for (i = 0; i < cnt; i++) {
-            libusb_get_device_descriptor(list[i], &dd);
-            
-            const char *name = [self findKnownDeviceVendorID:dd.idVendor
-                                                    DeviceID:dd.idProduct];
-            if (name) {
-                [tempDeviceList addObject:[NSString stringWithCString:name
-                                                             encoding:NSUTF8StringEncoding]];
-            }
+        if (kretval) {
+            NSLog(@"Error getting deviceList!");
         }
         
-        libusb_free_device_list(list, 0);
+        // Scan through the USB Devices looking for those that match
+        // our known devices.  The deviceList contains dictionaries of
+        // NSString names and locationIDs.  The locationID is used to
+        // find the device again when the user opens it.
+        io_service_t usbDevice;
+        while ((usbDevice = IOIteratorNext(iterator))) {
+
+            // Get the USB device's name.
+            io_name_t deviceName;
+            kretval = IORegistryEntryGetName(usbDevice, deviceName);
+            if (KERN_SUCCESS != kretval) {
+                deviceName[0] = '\0';
+            }
+            
+            NSString *deviceNameString = [NSString stringWithCString:deviceName
+                                                            encoding:NSUTF8StringEncoding];
+
+            // Now, we need to get the product and vendor IDs of this device.
+            // In order to do this, we need to create an IOUSBDeviceInterface for our device.
+            // This will create the necessary connections between our
+            // userland application and the kernel object for the USB Device.
+            SInt32				score;
+            IOCFPlugInInterface	**plugInInterface = NULL;        
+            kretval = IOCreatePlugInInterfaceForService(usbDevice,
+                                                        kIOUSBDeviceUserClientTypeID,
+                                                        kIOCFPlugInInterfaceID,
+                                                        &plugInInterface, &score);
+            
+            if ((kIOReturnSuccess != kretval) || !plugInInterface) {
+                fprintf(stderr, "IOCreatePlugInInterfaceForService returned 0x%08x.\n", kretval);
+                continue;
+            }
+            
+            // Use the plugin interface to retrieve the device interface.
+            IOUSBDeviceInterface **deviceInterface;
+            HRESULT 			 res;
+            res = (*plugInInterface)->QueryInterface(plugInInterface,
+                                                     CFUUIDGetUUIDBytes(kIOUSBDeviceInterfaceID),
+                                                     (LPVOID*) &deviceInterface);
+            
+            // Now done with the plugin interface.
+            (*plugInInterface)->Release(plugInInterface);
+            
+            // Now that we have the IOUSBDeviceInterface,
+            // we can call the routines in IOUSBLib.h.
+            // In this case, fetch the product and vendor IDs.
+            // The locationID uniquely identifies the device
+            // and will remain the same, even across reboots,
+            // so long as the bus topology doesn't change.
+            
+            UInt32 idLocation;
+            UInt16 idProduct, idVendor;
+            kretval = (*deviceInterface)->GetLocationID(deviceInterface, &idLocation);
+            kretval = (*deviceInterface)->GetDeviceProduct(deviceInterface, &idProduct);
+            kretval = (*deviceInterface)->GetDeviceVendor(deviceInterface, &idVendor);            
+
+            // Search through the known devices array, looking for matches
+            const char *name = [self findKnownDeviceVendorID:idVendor
+                                                    DeviceID:idProduct];
+            if (name) {
+                NSNumber *locationIDNumber;
+                deviceNameString = [NSString stringWithCString:name
+                                                      encoding:NSUTF8StringEncoding];
+                locationIDNumber = [NSNumber numberWithInteger:idLocation];
+                NSDictionary *deviceDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                            deviceNameString, @"deviceName",
+                                            locationIDNumber, @"deviceLocation", nil];
+                [tempDeviceList addObject:deviceDict];
+            }
+            
+#ifdef DEBUG_USB
+            else {
+                NSLog(@"ignoring USB Device \"%@\" PID: 0x%04x VID: 0x%04x",
+                      deviceNameString, idProduct, idVendor);
+            }
+#endif            
+            // Done with this USB device; release the reference added by IOIteratorNext
+            kretval = IOObjectRelease(usbDevice);
+        }
         
-        libusb_exit(ctx);
-                
-        deviceList = [tempDeviceList copy];
-        [tempDeviceList release];
+//        CFRelease(&iterator);
+        
+        deviceList = tempDeviceList;
     });
     
     return deviceList;
+    
 }
 
 
@@ -186,21 +257,31 @@ NSString *stringFromUSBError(int errorValue)
 //uint16_t rtlsdr_read_reg(rtlsdr_dev_t *dev, uint8_t block, uint16_t addr, uint8_t len)
 {
     // OSMOCOM RTL-SDR DERIVED CODE
-	int r;
-	unsigned char data[2];
+	unsigned char data[2] = {0,0};
 	uint16_t index = (block << 8);
-	uint16_t reg;
+
+//	r = libusb_control_transfer(devh, CTRL_IN, 0, addr, index, data, bytes, CTRL_TIMEOUT);
+    // END OSMOCOM CODE
+
+    IOUSBDevRequest     request;
+    request.bmRequestType = USBmakebmRequestType(kUSBIn, kUSBVendor, kUSBDevice);
+    request.bRequest = 0;
+    request.wValue = addr;
+    request.wIndex = index;
+    request.wLength = bytes;
+    request.pData = data;
     
-	r = libusb_control_transfer(devh, CTRL_IN, 0,
-                                addr, index, data, bytes,
-                                CTRL_TIMEOUT);
+#ifdef DEBUG_USB
+    NSLog(@"Write address 0x%x, index %d, data 0x%x, length %d\n", addr, index, *(uint16_t *)data, bytes);
+#endif
     
-	if (r < 0)
-		NSLog(@"%s failed: %@", __FUNCTION__, stringFromUSBError(r));
+    kern_return_t kretval = (*dev)->DeviceRequest(dev, &request);
+
+    if (kretval != KERN_SUCCESS) {
+		NSLog(@"%s failed: %d", __FUNCTION__, kretval);
+    }
     
-	reg = (data[1] << 8) | data[0];
-    
-	return reg;
+	return (data[1] << 8) | data[0];
 }
 
 - (void)writeValue:(uint16_t)value
@@ -209,22 +290,36 @@ NSString *stringFromUSBError(int errorValue)
             Length:(uint8_t)bytes;
 //void rtlsdr_write_reg(rtlsdr_dev_t *dev, uint8_t block, uint16_t addr, uint16_t val, uint8_t len)
 {
-	int r;
-	unsigned char data[2];
+    // OSMOCOM RTL-SDR DERIVED CODE
+	unsigned char data[2] = {0,0};
     
 	uint16_t index = (block << 8) | 0x10;
     
 	if (bytes == 1)
-		data[0] = bytes & 0xff;
+		data[0] = value & 0xff;
 	else
-		data[0] = bytes >> 8;
+		data[0] = value >> 8;
     
 	data[1] = bytes & 0xff;
+//	r = libusb_control_transfer(devh, CTRL_OUT, 0, addr, index, data, bytes, CTRL_TIMEOUT);
+    // END OSMOCOM CODE
     
-	r = libusb_control_transfer(devh, CTRL_OUT, 0, addr, index, data, bytes, CTRL_TIMEOUT);
+    IOUSBDevRequest     request;
+    request.bmRequestType = USBmakebmRequestType(kUSBOut, kUSBVendor, kUSBDevice);
+    request.bRequest = 0;
+    request.wValue = addr;
+    request.wIndex = index;
+    request.wLength = bytes;
+    request.pData = data;
     
-	if (r < 0)
-		NSLog(@"%s failed: %@", __FUNCTION__, stringFromUSBError(r));
+#ifdef DEBUG_USB
+    NSLog(@"Write address 0x%x, index %d, data 0x%x, length %d\n", addr, index, *(uint16_t *)data, bytes);
+#endif
+    kern_return_t kretval = (*dev)->DeviceRequest(dev, &request);
+    
+    if (kretval != KERN_SUCCESS) {
+		NSLog(@"%s failed: %d", __FUNCTION__, kretval);
+    }
 }
 
 - (uint16_t)demodReadAddress:(uint16_t)addr
@@ -232,37 +327,38 @@ NSString *stringFromUSBError(int errorValue)
                       length:(uint8_t)bytes
 {
     // OSMOCOM RTL-SDR DERIVED CODE
-	int r;
-	unsigned char data[2];
+	unsigned char data[2] = {0,0};
     
 	uint16_t index = page;
-	uint16_t reg;
 	addr = (addr << 8) | 0x20;
     
-	r = libusb_control_transfer(devh, CTRL_IN, LIBUSB_REQUEST_GET_STATUS,
-                                addr, index, data, bytes,
-                                CTRL_TIMEOUT);
-    
-    NSLog(@"Demod read address 0x%x, index %d, data 0x%x, length %d\n", addr, index, *(uint16_t *)data, bytes);
-	
-    if (r < 0)
-		NSLog(@"%s failed: %@", __FUNCTION__, stringFromUSBError(r));
-    
-	reg = (data[1] << 8) | data[0];
-
-	return reg;
+//	r = libusb_control_transfer(dev->devh, CTRL_IN, 0, addr, index, data, len, CTRL_TIMEOUT);
     // END OSMOCOM CODE
+    
+#ifdef DEBUG_USB
+    NSLog(@"Demod read address 0x%x, index %d, data 0x%x, length %d\n", addr, index, *(uint16_t *)data, bytes);
+#endif
+    
+    IOUSBDevRequest     request;
+    request.bmRequestType = USBmakebmRequestType(kUSBIn, kUSBVendor, kUSBDevice);
+    request.bRequest = 0;
+    request.wValue = addr;
+    request.wIndex = index;
+    request.wLength = bytes;
+    request.pData = data;
+    kern_return_t kretval = (*dev)->DeviceRequest(dev, &request);
+
+    if (kretval != KERN_SUCCESS) {
+		NSLog(@"%s failed: %d", __FUNCTION__, kretval);
+    }
+    
+	return (data[1] << 8) | data[0];
 }
 
-- (void)demodWriteValue:(uint16_t)value
-              AtAddress:(uint16_t)addr
-                 InPage:(uint8_t)page
-                 Length:(uint8_t)bytes;
-
+- (void)demodWriteValue:(uint16_t)value AtAddress:(uint16_t)addr InPage:(uint8_t)page Length:(uint8_t)bytes;
 {
     // OSMOCOM RTL-SDR DERIVED CODE
-	int r;
-	unsigned char data[2];
+	unsigned char data[2] = {0,0};
 	uint16_t index = 0x10 | page;
 	addr = (addr << 8) | 0x20;
     
@@ -272,20 +368,29 @@ NSString *stringFromUSBError(int errorValue)
 		data[0] = value >> 8;
     
 	data[1] = value & 0xff;
-    
-	r = libusb_control_transfer(devh, CTRL_OUT, LIBUSB_REQUEST_GET_STATUS,
-                                addr, index, data, bytes,
-                                CTRL_TIMEOUT);
 
-    NSLog(@"Demod write address 0x%x, index %d, data 0x%x, length %d\n", addr, index, *(uint16_t *)data, bytes);
-
-//	if (r < 0)
-//		NSLog(@"%s failed: %@", __FUNCTION__, stringFromUSBError(r));
-
-    [self demodReadAddress:0x01
-                  fromPage:0x0a
-                    length:1];
+//	r = libusb_control_transfer(dev->devh, CTRL_OUT, 0, addr, index, data, len, CTRL_TIMEOUT);
     // END OSMOCOM CODE
+    
+#ifdef DEBUG_USB
+    NSLog(@"Demod write address 0x%x, index %d, data 0x%x, length %d\n", addr, index, *(uint16_t *)data, bytes);
+#endif
+    
+    IOUSBDevRequest     request;
+    request.bmRequestType = USBmakebmRequestType(kUSBOut, kUSBVendor, kUSBDevice);
+    request.bRequest = 0;
+    request.wValue = addr;
+    request.wIndex = index;
+    request.wLength = bytes;
+    request.pData = data;
+    
+    kern_return_t kretval = (*dev)->DeviceRequest(dev, &request);
+    
+    if (kretval != KERN_SUCCESS) {
+		NSLog(@"%s failed: %d", __FUNCTION__, kretval);
+    }
+    
+    [self demodReadAddress:0x01 fromPage:0x0a length:1];
 }
 
 - (void)setI2cRepeater:(bool)enabled
@@ -301,28 +406,53 @@ NSString *stringFromUSBError(int errorValue)
     // END OSMOCOM CODE
 }
 
-- (int)readArray:(uint8_t*)array fromAddress:(uint16_t)addr inBlock:(uint8_t)block length:(uint8_t)len
+- (int)readArray:(uint8_t*)array fromAddress:(uint16_t)addr inBlock:(uint8_t)block length:(uint8_t)bytes
 {
     // OSMOCOM RTL-SDR DERIVED CODE
-	int r;
 	uint16_t index = (block << 8);
-    
-	r = libusb_control_transfer(devh, CTRL_IN, 0, addr, index, array, len, CTRL_TIMEOUT);
-    
-	return r;
+//	r = libusb_control_transfer(devh, CTRL_IN, 0, addr, index, array, len, CTRL_TIMEOUT);
     // END OSMOCOM CODE
+    
+    IOUSBDevRequest     request;
+    request.bmRequestType = USBmakebmRequestType(kUSBIn, kUSBVendor, kUSBDevice);
+    request.bRequest = 0;
+    request.wValue = addr;
+    request.wIndex = index;
+    request.wLength = bytes;
+    request.pData = array;
+    
+#ifdef DEBUG_USB
+    NSLog(@"Array read address 0x%x, index %d, length %d\n", addr, index, bytes);
+#endif
+    
+    kern_return_t kretval = (*dev)->DeviceRequest(dev, &request);
+
+	return kretval;
 }
 
-- (int)writeArray:(uint8_t *)array toAddress:(uint16_t)addr inBlock:(uint8_t)block length:(uint8_t)len
+- (int)writeArray:(uint8_t *)array toAddress:(uint16_t)addr inBlock:(uint8_t)block length:(uint8_t)bytes
 {
     // OSMOCOM RTL-SDR DERIVED CODE
-	int r;
 	uint16_t index = (block << 8) | 0x10;
-    
-	r = libusb_control_transfer(devh, CTRL_OUT, 0, addr, index, array, len, CTRL_TIMEOUT);
-    
-	return r;
+//	r = libusb_control_transfer(devh, CTRL_OUT, 0, addr, index, array, len, CTRL_TIMEOUT);    
     // END OSMOCOM CODE
+
+    IOUSBDevRequest     request;
+    request.bmRequestType = USBmakebmRequestType(kUSBOut, kUSBVendor, kUSBDevice);
+    request.bRequest = 0;
+    request.wValue = addr;
+    request.wIndex = index;
+    request.wLength = bytes;
+    request.pData = array;
+    
+#ifdef DEBUG_USB
+    NSLog(@"Array read address 0x%x, index %d, length %d\n", addr, index, bytes);
+#endif
+    
+    kern_return_t kretval = (*dev)->DeviceRequest(dev, &request);
+    
+	return kretval;
+
 }
 
 - (int)writeI2cRegister:(uint8_t)reg atAddress:(uint8_t)i2c_addr withValue:(uint8_t)val
@@ -417,9 +547,9 @@ NSString *stringFromUSBError(int errorValue)
     [self writeValue:0x09 AtAddress:USB_SYSCTL InBlock:USBB Length:1];
     
 //	rtlsdr_write_reg(dev, USBB, USB_EPA_MAXPKT, 0x0002, 2);
-    [self writeValue:0x0002 AtAddress:USB_EPA_MAXPKT InBlock:2 Length:2];
+    [self writeValue:0x0002 AtAddress:USB_EPA_MAXPKT InBlock:USBB Length:2];
 //	rtlsdr_write_reg(dev, USBB, USB_EPA_CTL, 0x1002, 2);
-    [self writeValue:0x1002 AtAddress:USB_EPA_CTL InBlock:2 Length:2];
+    [self writeValue:0x1002 AtAddress:USB_EPA_CTL InBlock:USBB Length:2];
     
 	/* poweron demod */
 //	rtlsdr_write_reg(dev, SYSB, DEMOD_CTL_1, 0x22, 1);
@@ -446,7 +576,7 @@ NSString *stringFromUSBError(int errorValue)
 	/* set FIR coefficients */
 	for (i = 0; i < sizeof (fir_coeff); i++) {
 //		rtlsdr_demod_write_reg(dev, 1, 0x1c + i, fir_coeff[i], 1);
-        [self demodWriteValue:fir_coeff[i] AtAddress:0x1c InPage:1 Length:1];
+        [self demodWriteValue:fir_coeff[i] AtAddress:(0x1c + i) InPage:1 Length:1];
     }
     
 //	rtlsdr_demod_write_reg(dev, 0, 0x19, 0x25, 1);
@@ -484,64 +614,126 @@ NSString *stringFromUSBError(int errorValue)
     return self;
 }
 
+- (bool)configureDevice
+{
+    UInt8                           numConfig;
+    IOReturn                        kr;
+    IOUSBConfigurationDescriptorPtr configDesc;
+    
+    //Get the number of configurations. The sample code always chooses
+    //the first configuration (at index 0) but your code may need a
+    //different one
+    kr = (*dev)->GetNumberOfConfigurations(dev, &numConfig);
+    if (!numConfig)
+        return NO;
+    
+    //Get the configuration descriptor for index 0
+    kr = (*dev)->GetConfigurationDescriptorPtr(dev, 0, &configDesc);
+    if (kr)
+    {
+        printf("Couldn’t get configuration descriptor for index %d (err = %08x)\n", 0, kr);
+        return NO;
+    }
+    
+    //Set the device’s configuration. The configuration value is found in
+    //the bConfigurationValue field of the configuration descriptor
+    kr = (*dev)->SetConfiguration(dev, configDesc->bConfigurationValue);
+    if (kr)
+    {
+        printf("Couldn’t set configuration to value %d (err = %08x)\n", 0,
+               kr);
+        return NO;
+    }
+    
+    return YES;
+}
+
 - (id)initWithDeviceIndex:(NSInteger)index
 {
     self = [super init];
     if (self) {
-        // OSMOCOM RTL-SDR DERIVED CODE
-        int r;
-        int i;
-        libusb_device **list;
-        libusb_device *device = NULL;
-        uint32_t device_count = 0;
-        struct libusb_device_descriptor dd;
-        ssize_t cnt;
+        NSNumber *idLocationNumber = [[deviceList objectAtIndex:index] objectForKey:@"deviceLocation"];
+        UInt32 idLocation = (uint32_t)[idLocationNumber integerValue];
         
-        libusb_init(&context);
+        // Get the deviceInterface from the location ID stored in the device List
+        kern_return_t kretval;
         
-        cnt = libusb_get_device_list(context, &list);
+        // Create matching dictionaries for all USB devices
+        CFMutableDictionaryRef usbMatchingDictionary = nil;
+        io_iterator_t iterator;
+        usbMatchingDictionary = IOServiceMatching(kIOUSBDeviceClassName);
+
+        // Filter out only the device with the correct location id
+//        CFNumberRef locationID_CFNumber = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &idLocation);
+//        CFDictionarySetValue(usbMatchingDictionary, 
+//                             CFSTR(kIOLocationMatchKey),
+//                             locationID_CFNumber);
         
-        for (i = 0; i < cnt; i++) {
-            device = list[i];
+
+        kretval = IOServiceGetMatchingServices(kIOMasterPortDefault, 
+                                               usbMatchingDictionary, 
+                                               &iterator);
+                
+        if (kretval != kIOReturnSuccess || iterator == 0) {
+            NSLog(@"Error getting deviceList!");
+        }
+        
+        // Scan through the USB Devices looking for those that match
+        // our known devices.  The deviceList contains dictionaries of
+        // NSString names and locationIDs.  The locationID is used to
+        // find the device again when the user opens it.
+        io_service_t usbDevice;
+        while ((usbDevice = IOIteratorNext(iterator))) {
+
+            SInt32 score;
+            IOCFPlugInInterface	**plugInInterface = NULL;        
+            kretval = IOCreatePlugInInterfaceForService(usbDevice,
+                                                        kIOUSBDeviceUserClientTypeID,
+                                                        kIOCFPlugInInterfaceID,
+                                                        &plugInInterface, &score);
             
-            libusb_get_device_descriptor(list[i], &dd);
-            
-            if ([RTLSDRDevice findKnownDeviceVendorID:dd.idVendor
-                                             DeviceID:dd.idProduct])
-            {
-                device_count++;
+            if ((kIOReturnSuccess != kretval) || !plugInInterface) {
+                fprintf(stderr, "IOCreatePlugInInterfaceForService returned 0x%08x.\n", kretval);
+                continue;
             }
             
-            if (index == device_count - 1)
-                break;
+            // Use the plugin interface to retrieve the device interface.
+            HRESULT res;
+            res = (*plugInInterface)->QueryInterface(plugInInterface,
+                                                     CFUUIDGetUUIDBytes(kIOUSBDeviceInterfaceID),
+                                                     (LPVOID*) &dev);
             
-            device = NULL;
+            // Now done with the plugin interface.
+            (*plugInInterface)->Release(plugInInterface);
+            
+            UInt32 idLocationTest;
+            kretval = (*dev)->GetLocationID(dev, &idLocationTest);
+            
+            // If the location ID matches the one stored in the dict, we've found the device
+            if (idLocationTest == idLocation) {
+                break;
+            }
         }
         
-        if (!device) {
-            libusb_free_device_list(list, 0);
-            libusb_exit(context);
+        // Now the usbDevice is the one we want
+        // and the deviceInterface is what we want
+        //Open the device to change its state
+        kretval = (*dev)->USBDeviceOpen(dev);
+        if (kretval != kIOReturnSuccess)
+        {
+            printf("Unable to open device: %08x\n", kretval);
+            (void) (*dev)->Release(dev);
             [self release];
             self = nil;
             return self;
         }
 
-        r = libusb_open(device, &devh);
-        if (r < 0) {
-            NSLog(@"Unable to open device (usb_open): %d", r);
-            libusb_free_device_list(list, 0);
-            libusb_exit(context);
-            [self release];
-            self = nil;
-            return self;
-        }
-        
-        libusb_free_device_list(list, 0);
-
-        r = libusb_claim_interface(devh, 0);
-        if (r < 0) {
-            NSLog(@"usb_claim_interface error %d\n", r);
-            libusb_exit(context);
+        //Configure device
+        if (![self configureDevice])
+        {
+            printf("Unable to configure device: %08x\n", kretval);
+            (void) (*dev)->USBDeviceClose(dev);
+            (void) (*dev)->Release(dev);
             [self release];
             self = nil;
             return self;
@@ -551,18 +743,15 @@ NSString *stringFromUSBError(int errorValue)
         
         [self initBaseband];
         
-        // Have the tuner class detect the type and create
-        // a class instance for it.
+        // Have the tuner class detect the type and create a class instance for itself.
         tuner = [RTLSDRTuner createTunerForDevice:self];
         
         if (tuner == nil) {
-            libusb_exit(context);
-            free(devh);
             [self release];
             self = nil;
             return self;
         }
-
+        
         [tuner setXtal:rtlXtal];
     }
     
@@ -572,12 +761,12 @@ NSString *stringFromUSBError(int errorValue)
 #pragma mark -
 #pragma mark Getters and Setters
 // Sample rate getting/setting
--(NSUInteger)sampleRate
+-(double)sampleRate
 {
     return sampleRate;
 }
 
--(void)setSampleRate:(NSUInteger)newSampleRate
+-(double)setSampleRate:(double)newSampleRate
 {
     // OSMOCOM RTL-SDR DERIVED CODE
     uint16_t tmp;
@@ -593,8 +782,8 @@ NSString *stringFromUSBError(int errorValue)
     
 	real_rate = (rtlXtal * pow(2, 22)) / rsamp_ratio;
     
-	if ( ((double)sampleRate) != real_rate )
-		fprintf(stderr, "Exact sample rate is: %f Hz\n", real_rate);
+	if ( sampleRate != real_rate )
+		NSLog(@"Exact sample rate is: %f Hz\n", real_rate);
     
     [tuner setBandWidth:real_rate];
     
@@ -615,15 +804,17 @@ NSString *stringFromUSBError(int errorValue)
     [self demodWriteValue:0x10 AtAddress:0x01 InPage:1 Length:1];
 //	rtlsdr_demod_write_reg(dev, 1, 0x01, 0x10, 1);    
     // END OSMOCOM CODE
+    
+    return real_rate;
 }
 
-- (void)setCenterFreq:(NSUInteger)freq
+- (double)setCenterFreq:(double)freq
 {
     double f = (double)freq * (1.0 + freqCorrection / 1e6);
-    [tuner setFreq:f];
+    return [tuner setFreq:f];
 }
 
-- (NSUInteger)centerFreq
+- (double)centerFreq
 {
     return [tuner freq];
 }

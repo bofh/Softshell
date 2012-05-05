@@ -7,7 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <libusb.h>
+//#import <libusb.h>
+
+#include <IOKit/IOKitLib.h>
+#include <IOKit/IOMessage.h>
+#include <IOKit/IOCFPlugIn.h>
+#include <IOKit/usb/IOUSBLib.h>
+
+#import "RTLSDRTuner.h"
 
 @class RTLSDRTuner;
 
@@ -20,16 +27,20 @@
     NSUInteger centerFreq;
     NSUInteger freqCorrection;
     NSUInteger tunerGain;
-    NSUInteger sampleRate;
+    double sampleRate;
     
     RTLSDRTuner *tuner;
     
-    libusb_context *context;
-    libusb_device_handle *devh;
+    IOUSBDeviceInterface **dev;
+    
+//    libusb_context *context;
+//    libusb_device_handle *devh;
 }
 
 + (NSInteger)deviceCount;
 + (NSArray *)deviceList;
+
+@property(readonly) RTLSDRTuner *tuner;
 
 // This initializes an SDR device with an index into the device list
 - (id)initWithDeviceIndex:(NSInteger)index;
@@ -57,9 +68,11 @@
 /*!
  * Get actual frequency the device is tuned to.
  */
-@property(readwrite) NSUInteger centerFreq;
 @property(readwrite) NSUInteger freqCorrection;
 @property(readwrite) NSUInteger tunerGain;
+
+- (double)centerFreq;
+- (double)setCenterFreq:(double)freq;
 
 /* this will select the baseband filters according to the requested sample rate */
 /*!
@@ -68,7 +81,8 @@
  * \param dev the device handle given by rtlsdr_open()
  * \return 0 on error, sample rate in Hz otherwise
  */
-@property(readwrite) NSUInteger sampleRate;
+- (double)sampleRate;
+- (double)setSampleRate:(double)sampleRate;
 
 /* streaming functions */
 

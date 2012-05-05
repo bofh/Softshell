@@ -13,15 +13,17 @@
 {
     RTLSDRDevice *device;
 
-    NSArray *deviceList;
+    NSMutableArray *deviceList;
     IBOutlet NSComboBox *deviceComboBox;
+    IBOutlet NSTextField *tunerTypeField;
 }
 
 @property (retain) IBOutlet NSComboBox *deviceComboBox;
 
 @property (assign) IBOutlet NSWindow *window;
-@property (readonly) NSArray *deviceList;
 
 - (IBAction)openDevice:(id)sender;
+
+- (NSArray *)deviceList;
 
 @end

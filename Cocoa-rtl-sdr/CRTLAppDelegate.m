@@ -11,7 +11,6 @@
 @implementation CRTLAppDelegate
 
 @synthesize window = _window;
-@synthesize deviceList;
 @synthesize deviceComboBox;
 
 - (void)dealloc
@@ -19,11 +18,29 @@
     [super dealloc];
 }
 
+- (NSArray *)deviceList
+{
+    return deviceList;
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    deviceList = [RTLSDRDevice deviceList];
-    [deviceComboBox bind:NSContentBinding toObject:self
-             withKeyPath:@"deviceList" options:nil];
+    NSArray *tempDeviceList = [RTLSDRDevice deviceList];
+    
+    deviceList = [[NSMutableArray alloc] initWithCapacity:[tempDeviceList count]];
+    for (NSDictionary *dict in tempDeviceList) {
+        NSString *name = [dict objectForKey:@"deviceName"];
+        if (name == nil) {
+            NSLog(@"Nil name received from device list...  this is bad.");
+        } else {
+            [deviceList addObject:name];
+        }
+    }
+    
+    [deviceComboBox bind:NSContentBinding
+                toObject:self
+             withKeyPath:@"self.deviceList"
+                 options:nil];
     [deviceComboBox selectItemAtIndex:0];
 }
 
@@ -34,9 +51,14 @@
     
     if (device == nil) {
         NSLog(@"Unable to open device");
+    } else {
+        if ([device tuner] != nil) {
+            [tunerTypeField setStringValue:[[device tuner] tunerType]];
+        }
     }
     
     
 }
 
+         
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Oregon State University (COAS). All rights reserved.
 //
 
+#import "RTLSDRDevice.h"
 #import "RTLSDRTuner.h"
 #import "RTLSDRTuner_e4000.h"
 #import "RTLSDRTuner_fc0012.h"
@@ -90,12 +91,17 @@
     return self;
 }
 
+- (NSString *)tunerType
+{
+    return @"Baseclass!";
+}
+
 - (double)freq
 {
     return freq;
 }
 
-- (void)setFreq:(double)freq
+- (double)setFreq:(double)freq
 {
     [device setI2cRepeater:YES];
     
@@ -103,6 +109,8 @@
     // Tuning commands (implement in a subclass)
     
     [device setI2cRepeater:NO];
+    
+    return 0.;
 }
 
 - (NSUInteger)gain

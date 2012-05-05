@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RTLSDRDevice.h"
+
+@class RTLSDRDevice;
 
 @interface RTLSDRTuner : NSObject
 {
@@ -23,9 +24,12 @@
 + (RTLSDRTuner *)createTunerForDevice:(RTLSDRDevice *)device;
 
 - (id)initWithDevice:(RTLSDRDevice *)dev;
+- (NSString *)tunerType;
+
+- (double)freq;
+- (double)setFreq:(double)freq;
 
 @property (readwrite) double xtal;
-@property (readwrite) double freq;
 @property (readwrite) NSUInteger gain;
 @property (readwrite) NSUInteger bandWidth;
 
