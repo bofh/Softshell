@@ -930,7 +930,6 @@
 {
     // OSMOCOM RTL-SDR DERIVED CODE
 	unsigned char writearray[5];
-	int status;
     
 	int IF_BW;
     
@@ -1155,7 +1154,6 @@
 {
     // OSMOCOM RTL-SDR DERIVED CODE
 	unsigned char writearray[5];
-	int status;
     
 	unsigned char read1[1];
 	unsigned char IOFF;
