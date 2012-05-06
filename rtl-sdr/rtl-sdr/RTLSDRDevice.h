@@ -22,7 +22,7 @@
 {
     NSUInteger rtlXtal;
     NSUInteger rtlFreq;
-    NSUInteger tunerFreq;
+    NSUInteger tunerClock;
     
     NSUInteger centerFreq;
     NSUInteger freqCorrection;
@@ -63,7 +63,7 @@
  * \check value for success
  */
 @property(readwrite) NSUInteger rtlFreq;
-@property(readwrite) NSUInteger tunerFreq;
+@property(readwrite) NSUInteger tunerClock;
 
 /*!
  * Get actual frequency the device is tuned to.

@@ -9,6 +9,8 @@
 #import "RTLSDRDevice.h"
 #import "RTLSDRTuner.h"
 
+#define DEBUG_USB
+
 // OSMOCOM RTL-SDR DERIVED CODE
 #define DEFAULT_BUF_NUMBER	32
 #define DEFAULT_BUF_LENGTH	(16 * 32 * 512)
@@ -446,7 +448,7 @@ static dispatch_once_t onceToken;
     request.pData = array;
     
 #ifdef DEBUG_USB
-    NSLog(@"Array read address 0x%x, index %d, length %d\n", addr, index, bytes);
+    NSLog(@"Array write address 0x%x, index %d, length %d\n", addr, index, bytes);
 #endif
     
     kern_return_t kretval = (*dev)->DeviceRequest(dev, &request);
@@ -464,6 +466,10 @@ static dispatch_once_t onceToken;
 	data[0] = reg;
 	data[1] = val;
 
+#ifdef DEBUG_USB
+    NSLog(@"I2C write register 0x%x, address %d, value %d\n", reg, i2c_addr, val);
+#endif
+
     //	return rtlsdr_write_array(dev, IICB, addr, (uint8_t *)&data, 2);
     return [self writeArray:(uint8_t *)&data toAddress:addr inBlock:IICB length:2];
     // END OSMOCOM CODE
@@ -479,6 +485,10 @@ static dispatch_once_t onceToken;
 //	rtlsdr_read_array(dev, IICB, addr, &data, 1);
     [self readArray:&data fromAddress:addr inBlock:IICB length:1];
     
+#ifdef DEBUG_USB
+    NSLog(@"I2C read register 0x%x, address %d, value %d\n", reg, i2c_addr, data);
+#endif
+
 	return data;
 }
 
@@ -486,6 +496,8 @@ static dispatch_once_t onceToken;
 {
 	uint16_t addr = i2c_addr;
 
+    NSLog(@"I2C write at address 0x%x length %d", i2c_addr, len);
+    
     return [self writeArray:buffer toAddress:addr inBlock:IICB length:len];
 }
 
@@ -493,7 +505,11 @@ static dispatch_once_t onceToken;
 {
 	uint16_t addr = i2c_addr;
 
-    return [self readArray:buffer fromAddress:addr inBlock:IICB length:len];
+    int retval = [self readArray:buffer fromAddress:addr inBlock:IICB length:len];
+    
+    NSLog(@"I2C read at address 0x%x length %d", i2c_addr, len);
+
+    return retval;
 }
 
 - (void)setGpioBit:(uint8_t)gpio value:(int)value
@@ -874,21 +890,21 @@ static dispatch_once_t onceToken;
     // END OSMOCOM CODE
 }
 
-- (NSUInteger)tunerFreq
+- (NSUInteger)tunerClock
 {
-    return tunerFreq;
+    return tunerClock;
 }
 
 // This is probably horribly wrong
-- (void)setTunerFreq:(NSUInteger)newTunerFreq
+- (void)setTunerClock:(NSUInteger)newTunerFreq
 {
     // OSMOCOM RTL-SDR DERIVED CODE
-	if (newTunerFreq != tunerFreq) {
+	if (newTunerFreq != tunerClock) {
         
-		tunerFreq = newTunerFreq;
+		tunerClock = newTunerFreq;
         
-		if (tunerFreq == 0)
-			tunerFreq = rtlXtal;
+		if (tunerClock == 0)
+			tunerClock = rtlXtal;
         
 		/* update xtal-dependent settings */
         [tuner setFreq:[tuner freq]];
