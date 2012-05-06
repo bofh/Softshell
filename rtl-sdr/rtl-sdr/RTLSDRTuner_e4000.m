@@ -72,7 +72,7 @@
 	// For dummy I2C command, don't check executing status.
 //         I2CWriteByte(pTuner, NoUse, RegAddr, WritingByte)
 //	status=I2CWriteByte(pTuner, 200  , 2      , writearray[0]);
-    success = [self I2CWriteByte:64 toRegister:2];
+    [self I2CWriteByte:64 toRegister:2];
 
 //	status=I2CWriteByte (pTuner, 200,2,writearray[0]);
     success = [self I2CWriteByte:64 toRegister:2];
@@ -548,10 +548,6 @@
 	//printf("\nRegister a=%d", writearray[1]);
 	//printf("\nRegister b=%d", writearray[2]);
 	//printf("\nRegister d=%d", writearray[4]);
-	if(status != E4000_I2C_SUCCESS)
-	{
-		return E4000_1_FAIL;
-	}
     
 	if (Freq<=82900)
 	{
@@ -1338,18 +1334,19 @@
 
 - (double)setFreq:(double)freqIn
 {
+    [device setI2cRepeater:YES];
+
+    NSLog(@"Set frequency to %f", freqIn);
     // OSMOCOM RTL-SDR DERIVED CODE
-	double RfFreqKhz;
-	double CrystalFreqKhz;
-    
-    int CrystalFreqHz = [device tunerClock];
-    
 	// Set tuner RF frequency in KHz.
 	// Note: 1. RfFreqKhz = round(RfFreqHz / 1000)
 	//          CrystalFreqKhz = round(CrystalFreqHz / 1000)
 	//       2. Call E4000 source code functions.
-	RfFreqKhz      = (freqIn + 500.) / 1000.;
-	CrystalFreqKhz = (CrystalFreqHz + 500.) / 1000.;
+	double RfFreqKhz      = (freqIn + 500.) / 1000.;
+	double CrystalFreqKhz = (xtal + 500.) / 1000.;
+    
+    RfFreqKhz = floor(RfFreqKhz);
+    CrystalFreqKhz = floor(CrystalFreqKhz);
     
     if (![self manualGain]) {
         return freq;
@@ -1359,7 +1356,7 @@
         return freq;
     }
     
-    if (![self PLLwithRefClock:CrystalFreqHz freq:RfFreqKhz])
+    if (![self PLLwithRefClock:CrystalFreqKhz freq:RfFreqKhz])
         return NO;
     
     if (![self LNAfilter:RfFreqKhz]) {
@@ -1380,44 +1377,37 @@
 
     freq = RfFreqKhz * 1000.;
     
+    [device setI2cRepeater:NO];
+
     return freq;
 }
 
-/*
-int
-e4000_SetBandwidthHz(
-                     void *pTuner,
-                     unsigned long BandwidthHz
-                     )
+- (void)setBandWidth:(NSUInteger)newBandwidth
 {
+    NSLog(@"Setting bandwidth: %ld", newBandwidth);
+    // OSMOCOM RTL-SDR DERIVED CODE
     //	E4000_EXTRA_MODULE *pExtra;
     
 	int BandwidthKhz;
 	int CrystalFreqKhz;
     
-	int CrystalFreqHz = rtlsdr_get_tuner_clock(pTuner);
-    
+	NSInteger CrystalFreqHz = [device tunerClock];
     
 	// Get tuner extra module.
-    //	pExtra = &(pTuner->Extra.E4000);
-    
+    //	pExtra = &(pTuner->Extra.E4000);    
     
 	// Set tuner bandwidth Hz.
 	// Note: 1. BandwidthKhz = round(BandwidthHz / 1000)
 	//          CrystalFreqKhz = round(CrystalFreqHz / 1000)
 	//       2. Call E4000 source code functions.
-	BandwidthKhz   = (int)((BandwidthHz + 500) / 1000);
+	BandwidthKhz   = (int)((newBandwidth + 500) / 1000);
 	CrystalFreqKhz = (int)((CrystalFreqHz + 500) / 1000);
     
-	if(IFfilter(pTuner, BandwidthKhz, CrystalFreqKhz) != E4000_1_SUCCESS)
-		goto error_status_execute_function;
-    
-    
-	return FUNCTION_SUCCESS;
-    
-error_status_execute_function:
-	return FUNCTION_ERROR;
+    if ([self IFfilterBandwidth:BandwidthKhz refClock:CrystalFreqKhz])
+        bandWidth = BandwidthKhz * 1000;
+        
+//	return bandWidth;
 }
-*/
+
 
 @end

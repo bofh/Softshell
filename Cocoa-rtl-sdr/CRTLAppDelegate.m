@@ -54,6 +54,8 @@
     } else {
         if ([device tuner] != nil) {
             [tunerTypeField setStringValue:[[device tuner] tunerType]];
+            [device setSampleRate:2048000];
+            [device setCenterFreq:144390000];
         }
     }
     

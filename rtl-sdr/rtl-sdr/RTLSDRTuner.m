@@ -31,7 +31,7 @@
         tuner = [[RTLSDRTuner_e4000 alloc] initWithDevice:device];
         
         [device setI2cRepeater:NO];
-        return tuner;
+        return [tuner autorelease];
     }
     
 //  reg = rtlsdr_i2c_read_reg(dev, FC0013_I2C_ADDR, FC0013_CHECK_ADDR);
@@ -41,7 +41,7 @@
         tuner = [[RTLSDRTuner_fc0012 alloc] initWithDevice:device];
         
         [device setI2cRepeater:NO];
-        return tuner;
+        return [tuner autorelease];
     }
     
     /* initialise GPIOs */
@@ -63,7 +63,7 @@
         tuner = [[RTLSDRTuner_fc2580 alloc] initWithDevice:device];
         
         [device setI2cRepeater:NO];
-        return tuner;
+        return [tuner autorelease];
     }
     
 //  reg = rtlsdr_i2c_read_reg(dev, FC0012_I2C_ADDR, FC0012_CHECK_ADDR);

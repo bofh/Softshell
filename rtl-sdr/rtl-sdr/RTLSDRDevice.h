@@ -124,8 +124,8 @@
 - (uint16_t)readAddress:(uint16_t)addr fromBlock:(uint8_t)block length:(uint8_t)bytes;
 - (void)writeValue:(uint16_t)value AtAddress:(uint16_t)addr InBlock:(uint8_t)block Length:(uint8_t)bytes;
 
-- (uint16_t)demodReadAddress:(uint16_t)addr fromPage:(uint8_t)page length:(uint8_t)bytes;
-- (void)demodWriteValue:(uint16_t)value AtAddress:(uint16_t)addr InPage:(uint8_t)page Length:(uint8_t)bytes;
+- (uint16_t)demodReadAddress:(uint16_t)addr fromBlock:(uint8_t)block length:(uint8_t)bytes;
+- (void)demodWriteValue:(uint16_t)value AtAddress:(uint16_t)addr InBlock:(uint8_t)block Length:(uint8_t)bytes;
 
 - (int)readArray:(uint8_t*)array fromAddress:(uint16_t)addr inBlock:(uint8_t)block length:(uint8_t)len;
 - (int)writeArray:(uint8_t *)array toAddress:(uint16_t)addr inBlock:(uint8_t)block length:(uint8_t)len;
