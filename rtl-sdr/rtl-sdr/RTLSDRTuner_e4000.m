@@ -447,7 +447,6 @@
     // OSMOCOM RTL-SDR DERIVED CODE
 	int VCO_freq;
 	unsigned char writearray[5];
-	int status;
     
 	unsigned char divider;
 	int intVCOfreq;

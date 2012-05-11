@@ -761,7 +761,6 @@ static dispatch_once_t onceToken;
             UInt8           transferType;
             UInt16          maxPacketSize;
             UInt8           interval;
-            char            *message;
             
             kr2 = (*interface)->GetPipeProperties(interface,
                                                   pipeRef, &direction,
