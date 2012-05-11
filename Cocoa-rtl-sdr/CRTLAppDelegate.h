@@ -8,21 +8,29 @@
 
 #import <Cocoa/Cocoa.h>
 #import <rtl-sdr/RTLSDRDevice.h>
+#import <OSUNetwork/OSUNetServer.h>
+#import <OSUNetwork/OSUNetSession.h>
 
-@interface CRTLAppDelegate : NSObject <NSApplicationDelegate>
+@interface CRTLAppDelegate : NSObject <NSApplicationDelegate, OSUNetServerDelegate, OSUNetSessionDelegate>
 {
     RTLSDRDevice *device;
 
+    OSUNetServer *server;
+    NSMutableArray *sessions;
+    
     NSMutableArray *deviceList;
-    IBOutlet NSComboBox *deviceComboBox;
-    IBOutlet NSTextField *tunerTypeField;
+    
+    bool running;
 }
 
 @property (retain) IBOutlet NSComboBox *deviceComboBox;
-
+@property (retain) IBOutlet NSButton *networkCheckBox;
+@property (retain) IBOutlet NSTextField *tunerTypeField;
+@property (retain) IBOutlet NSTextField *portNumberField;
 @property (assign) IBOutlet NSWindow *window;
 
 - (IBAction)openDevice:(id)sender;
+- (IBAction)networkToggle:(id)sender;
 
 - (NSArray *)deviceList;
 
