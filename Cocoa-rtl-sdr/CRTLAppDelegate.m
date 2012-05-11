@@ -33,6 +33,16 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    // Disable signals for broken pipe (they're handled during the send call)
+	struct sigaction act;		
+	if( sigaction(SIGPIPE, NULL, &act) == -1)
+		perror("Couldn't find the old handler for SIGPIPE");
+	else if (act.sa_handler == SIG_DFL) {
+		act.sa_handler = SIG_IGN;
+		if( sigaction(SIGPIPE, &act, NULL) == -1)
+			perror("Could not ignore SIGPIPE");
+	}
+
     NSArray *tempDeviceList = [RTLSDRDevice deviceList];
     
     deviceList = [[NSMutableArray alloc] initWithCapacity:[tempDeviceList count]];
@@ -80,21 +90,12 @@
     if ([networkCheckBox state] == NSOnState) {
         // If the server hasn't been allocated, create it
         if (server == nil) {
-            server = [[OSUNetServer alloc] init];
+            server = [[NetworkServer alloc] init];
             [server setDelegate:self];
         }
         
-        // If the server is allocated, just start it.
-        [server setPort:[portNumberField intValue]];
-        NSError *error;
-        [server start:&error];
-
-        // Print errors
-        if (error) {
-            NSLog(@"Error starting server: %@", [error localizedDescription]);
-            [networkCheckBox setState:NSOffState];
-            return;
-        }
+        [server openWithPort:[portNumberField intValue]];
+        [server acceptInBackground];
         
         // Start reading from the USB device
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
@@ -123,7 +124,7 @@
                     }
                     
                     // Send the data to every session (asynch)
-                    for (OSUNetSession *session in tempSessions) {
+                    for (NetworkSession *session in tempSessions) {
                         [session sendData:outputData];
                     }
                     
@@ -142,7 +143,7 @@
         // Stop the sessions
         [sessions removeAllObjects];
         // Stop the server
-        [server stop];
+        [server close];
     }    
 }
 
@@ -154,16 +155,31 @@
 
 #pragma mark -
 #pragma mark Delegate Methods
-- (void)OSUNetServer:(OSUNetServer *)server newSession:(OSUNetSession *)session
+
+#pragma mark -
+#pragma mark NetworkServer Delegate Methods
+- (void)NetworkServer:(NetworkServer *)theServer
+           newSession:(NetworkSession *)newSession
 {
-    NSLog(@"Accepted a new session.");
-    [sessions addObject:session];
+	NSLog(@"Accepted new session.");
+	
+    [newSession retain];
+    [newSession setDelegate:self];
+
+    @synchronized(sessions) {
+        [sessions addObject:newSession];
+    }
 }
 
-- (void)OSUNetServerPublished:(OSUNetServer *)server
+#pragma mark -
+#pragma mark NetworkSession Delegate Methods
+- (void)sessionTerminated:(NetworkSession *)session
 {
-    return;
+    NSLog(@"Removed a session.");
+
+    @synchronized(sessions) {
+        [sessions removeObject:session];
+    }
 }
 
-         
 @end

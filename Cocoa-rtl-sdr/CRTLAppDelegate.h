@@ -8,14 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 #import <rtl-sdr/RTLSDRDevice.h>
-#import <OSUNetwork/OSUNetServer.h>
-#import <OSUNetwork/OSUNetSession.h>
 
-@interface CRTLAppDelegate : NSObject <NSApplicationDelegate, OSUNetServerDelegate, OSUNetSessionDelegate>
+#import "NetworkServer.h"
+#import "NetworkSession.h"
+
+@interface CRTLAppDelegate : NSObject <NSApplicationDelegate, NetworkServerDelegate>
 {
     RTLSDRDevice *device;
 
-    OSUNetServer *server;
+    NetworkServer *server;
     NSMutableArray *sessions;
     
     NSMutableArray *deviceList;
