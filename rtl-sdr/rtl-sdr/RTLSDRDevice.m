@@ -21,7 +21,7 @@
 
 #define MAX_SAMP_RATE		3200000
 
-//#define CTRL_IN		(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_IN)
+//#define CTRL_IN	(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_IN)
 //#define CTRL_OUT	(LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_ENDPOINT_OUT)
 #define CTRL_TIMEOUT	1000
 #define BULK_TIMEOUT	0
@@ -667,6 +667,236 @@ static dispatch_once_t onceToken;
     return YES;
 }
 
+// This entire function is copied almost wholesale from the Apple documentation
+- (bool)findInterfaces
+{
+    IOReturn kretval;
+    
+    IOUSBFindInterfaceRequest   request;
+    request.bInterfaceClass = kIOUSBFindInterfaceDontCare;
+    request.bInterfaceSubClass = kIOUSBFindInterfaceDontCare;
+    request.bInterfaceProtocol = kIOUSBFindInterfaceDontCare;
+    request.bAlternateSetting = kIOUSBFindInterfaceDontCare;
+    UInt8                       interfaceClass;
+    UInt8                       interfaceSubClass;
+    
+    //Get an iterator for the interfaces on the device
+    io_iterator_t               iterator;
+    kretval = (*dev)->CreateInterfaceIterator(dev, &request, &iterator);
+    io_service_t usbInterface;
+    while ((usbInterface = IOIteratorNext(iterator)) != 0)
+    {
+        //Create an intermediate plug-in
+        SInt32                      score;
+        IOCFPlugInInterface         **plugInInterface = NULL;
+        kretval = IOCreatePlugInInterfaceForService(usbInterface,
+                                               kIOUSBInterfaceUserClientTypeID,
+                                               kIOCFPlugInInterfaceID,
+                                               &plugInInterface, &score);
+
+        //Release the usbInterface object after getting the plug-in
+        kretval = IOObjectRelease(usbInterface);
+        if ((kretval != kIOReturnSuccess) || !plugInInterface)
+        {
+            printf("Unable to create a plug-in (%08x)\n", kretval);
+            break;
+        }
+        
+        //Now create the device interface for the interface
+        IOUSBInterfaceInterface     **interface = NULL;
+        HRESULT                     result;
+        result = (*plugInInterface)->QueryInterface(plugInInterface,
+                                                    CFUUIDGetUUIDBytes(kIOUSBInterfaceInterfaceID),
+                                                    (LPVOID *) &interface);
+        //No longer need the intermediate plug-in
+        (*plugInInterface)->Release(plugInInterface);
+        
+        if (result || !interface)
+        {
+            printf("Couldn’t create a device interface for the interface (%08x)\n", (int) result);
+            break;
+        }
+
+        kretval = (*interface)->GetInterfaceClass(interface,    &interfaceClass);
+        kretval = (*interface)->GetInterfaceSubClass(interface, &interfaceSubClass);
+        
+//        printf("Interface class %d, subclass %d\n", interfaceClass, interfaceSubClass);
+        
+        //Now open the interface. This will cause the pipes associated with
+        //the endpoints in the interface descriptor to be instantiated
+        kretval = (*interface)->USBInterfaceOpen(interface);
+        if (kretval != kIOReturnSuccess)
+        {
+            printf("Unable to open interface (%08x)\n", kretval);
+            (void) (*interface)->Release(interface);
+            break;
+        }
+        
+        //Get the number of endpoints associated with this interface
+        UInt8 interfaceNumEndpoints;
+        kretval = (*interface)->GetNumEndpoints(interface,
+                                           &interfaceNumEndpoints);
+        if (kretval != kIOReturnSuccess)
+        {
+            printf("Unable to get number of endpoints (%08x)\n", kretval);
+            (void) (*interface)->USBInterfaceClose(interface);
+            (void) (*interface)->Release(interface);
+            break;
+        }
+        
+//        printf("Interface has %d endpoints\n", interfaceNumEndpoints);
+        //Access each pipe in turn, starting with the pipe at index 1
+        //The pipe at index 0 is the default control pipe and should be
+        //accessed using (*usbDevice)->DeviceRequest() instead
+        int pipeRef;
+        for (pipeRef = 1; pipeRef <= interfaceNumEndpoints; pipeRef++)
+        {
+            IOReturn        kr2;
+            UInt8           direction;
+            UInt8           number;
+            UInt8           transferType;
+            UInt16          maxPacketSize;
+            UInt8           interval;
+            char            *message;
+            
+            kr2 = (*interface)->GetPipeProperties(interface,
+                                                  pipeRef, &direction,
+                                                  &number, &transferType,
+                                                  &maxPacketSize, &interval);
+            if (kr2 != kIOReturnSuccess)
+                printf("Unable to get properties of pipe %d (%08x)\n",
+                       pipeRef, kr2);
+            else
+            {
+                /*
+                printf("PipeRef %d: ", pipeRef);
+                switch (direction)
+                {
+                    case kUSBOut:
+                        message = "out";
+                        break;
+                    case kUSBIn:
+                        message = "in";
+                        break;
+                    case kUSBNone:
+                        message = "none";
+                        break;
+                    case kUSBAnyDirn:
+                        message = "any";
+                        break;
+                    default:
+                        message = "???";
+                }
+                printf("direction %s, ", message);
+                
+                switch (transferType)
+                {
+                    case kUSBControl:
+                        message = "control";
+                        break;
+                    case kUSBIsoc:
+                        message = "isoc";
+                        break;
+                    case kUSBBulk:
+                        message = "bulk";
+                        break;
+                    case kUSBInterrupt:
+                        message = "interrupt";
+                        break;
+                    case kUSBAnyType:
+                        message = "any";
+                        break;
+                    default:
+                        message = "???";
+                }
+                printf("transfer type %s, maxPacketSize %d\n", message,
+                       maxPacketSize);
+                 */
+                // Try to identify the correct interface robustly
+                if (number == 1 && 
+                    transferType == kUSBBulk &&
+                    direction == kUSBIn) {
+                    bulkInterface = interface;
+                    bulkPacketSize = maxPacketSize;
+                    bulkPipeRef = number;
+//                    NSLog(@"Found bulk interface");
+                    return YES;
+                }
+
+            }
+        }
+        
+        /*
+#ifndef USE_ASYNC_IO    //Demonstrate synchronous I/O
+        kretval = (*interface)->WritePipe(interface, 2, kTestMessage, strlen(kTestMessage));
+        if (kretval != kIOReturnSuccess)
+        {
+            printf("Unable to perform bulk write (%08x)\n", kr);
+            (void) (*interface)->USBInterfaceClose(interface);
+            (void) (*interface)->Release(interface);
+            break;
+        }
+        
+        printf("Wrote \"%s\" (%ld bytes) to bulk endpoint\n", kTestMessage,
+               (UInt32) strlen(kTestMessage));
+        
+        numBytesRead = sizeof(gBuffer) - 1; //leave one byte at the end
+        //for NULL termination
+        kr = (*interface)->ReadPipe(interface, 9, gBuffer,
+                                    &numBytesRead);
+        if (kr != kIOReturnSuccess)
+        {
+            printf("Unable to perform bulk read (%08x)\n", kr);
+            (void) (*interface)->USBInterfaceClose(interface);
+            (void) (*interface)->Release(interface);
+            break;
+        }
+        
+        //Because the downloaded firmware echoes the one’s complement of the
+        //message, now complement the buffer contents to get the original data
+        for (i = 0; i < numBytesRead; i++)
+            gBuffer[i] = ~gBuffer[i];
+        
+        printf("Read \"%s\" (%ld bytes) from bulk endpoint\n", gBuffer,
+               numBytesRead);
+        
+#else   //Demonstrate asynchronous I/O
+        //As with service matching notifications, to receive asynchronous
+        //I/O completion notifications, you must create an event source and
+        //add it to the run loop
+        kr = (*interface)->CreateInterfaceAsyncEventSource(
+                                                           interface, &runLoopSource);
+        if (kr != kIOReturnSuccess)
+        {
+            printf("Unable to create asynchronous event source
+                   (%08x)\n", kr);
+                   (void) (*interface)->USBInterfaceClose(interface);
+                   (void) (*interface)->Release(interface);
+                   break;
+                   }
+                   CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource,
+                                      kCFRunLoopDefaultMode);
+                   printf("Asynchronous event source added to run loop\n");
+                   bzero(gBuffer, sizeof(gBuffer));
+                   strcpy(gBuffer, kTestMessage);
+                   kr = (*interface)->WritePipeAsync(interface, 2, gBuffer,
+                                                     strlen(gBuffer),
+                                                     WriteCompletion, (void *) interface);
+                   if (kr != kIOReturnSuccess)
+                   {
+                       printf("Unable to perform asynchronous bulk write (%08x)\n",
+                              kr);
+                       (void) (*interface)->USBInterfaceClose(interface);
+                       (void) (*interface)->Release(interface);
+                       break;
+                   }
+#endif
+         */
+    }
+    
+    return NO;
+}
+
 - (id)initWithDeviceIndex:(NSInteger)index
 {
     self = [super init];
@@ -774,6 +1004,8 @@ static dispatch_once_t onceToken;
         }
         
         [tuner setXtal:rtlXtal];
+        
+        [self findInterfaces];
     }
     
     return self;
@@ -916,7 +1148,49 @@ static dispatch_once_t onceToken;
         [tuner setFreq:[tuner freq]];
 	}
     
-    // END OSMOCOM CODE
+    // END O%uM CODE
+}
+
+#pragma mark -
+#pragma mark Bulk data methods
+-(bool)resetEndpoints
+{
+//  rtlsdr_write_reg(dev, USBB, USB_EPA_CTL, 0x1002, 2);
+    [self writeValue:0x1002 AtAddress:USB_EPA_CTL InBlock:USBB Length:2];
+    
+//  rtlsdr_write_reg(dev, USBB, USB_EPA_CTL, 0x0000, 2);
+    [self writeValue:0x0000 AtAddress:USB_EPA_CTL InBlock:USBB Length:2];
+
+    return YES;
+}
+
+
+- (NSData *)readSychronousLength:(NSUInteger)length
+{
+    // Make sure that the length is a multiple of the packet size
+    if (length % bulkPacketSize != 0) {
+        NSLog(@"Attempted read not of an integer number of packets");
+        return nil;
+    }
+ 
+    // Create an NSMutableData object
+    NSMutableData *tempData = [[NSMutableData alloc] initWithLength:length];
+    // Get a reference to the actual bytes
+    uint8_t *bytes = [tempData mutableBytes];
+    UInt32 size = (UInt32)length;
+    
+    IOReturn kretval;
+    kretval = (*bulkInterface)->ReadPipe(bulkInterface, bulkPipeRef, bytes, &size);
+    if (kretval != kIOReturnSuccess)
+    {
+        printf("Unable to perform bulk read (%08x)\n", kretval);
+        [tempData release];
+        return nil;
+    }
+    
+//    printf("Read %u bytes from the bulk endpoint\n", size);
+
+    return [tempData autorelease];
 }
 
 @end

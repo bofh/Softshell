@@ -1409,5 +1409,9 @@
 //	return bandWidth;
 }
 
+- (void)setGain:(NSUInteger)gain
+{
+    
+}
 
 @end

@@ -32,9 +32,14 @@
     RTLSDRTuner *tuner;
     
     IOUSBDeviceInterface **dev;
+    int bulkPacketSize;
+    int bulkPipeRef;
+    IOUSBInterfaceInterface **bulkInterface;
     
 //    libusb_context *context;
 //    libusb_device_handle *devh;
+    
+    
 }
 
 + (NSInteger)deviceCount;
@@ -89,8 +94,9 @@
 // This function starts reading from the device.
 // It will call the provided block when the specified number of
 // samples are collected.
-// The size must be multiples of 512, if zero defaults to 
-- (bool)readCount:(NSUInteger)bufferSize withBlock:(dispatch_block_t)block;
+// The size must be multiples of 512, if zero defaults to
+- (bool)resetEndpoints;
+- (NSData *)readSychronousLength:(NSUInteger)length;
 - (bool)stopReading;
 
 /*!
