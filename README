@@ -1,0 +1,18 @@
+I'm terrible at writing these readme files, so bear with me.
+
+Much more information is available on my blog at: alternet.us.com
+
+This code leverages the Osmocom RTL-SDR code heavily.
+Their website is here: http://sdr.osmocom.org/trac/wiki/rtl-sdr
+
+Thanks to:
+
+Steve Markgraf <steve@steve-m.de>
+Dimitri Stolnikov <horiz0n@gmx.net>
+Hoernchen <la@tfc-server.de>
+
+As their code is GPL v. 2, so is this code.  A copy of the GPL is available
+in the COPYING file.
+
+At the current time, only the E4000 tuner is supported, as it's the only one I have.
+I accept donations if you want ports of other tuners supported.

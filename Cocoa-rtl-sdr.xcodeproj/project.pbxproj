@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		3C0F4B12155CC7FA0084D784 /* NetworkServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0F4B0F155CC7FA0084D784 /* NetworkServer.m */; };
 		3C0F4B13155CC7FA0084D784 /* NetworkSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0F4B11155CC7FA0084D784 /* NetworkSession.m */; };
+		3C0F4B4E155CCE220084D784 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 3C0F4B4D155CCE220084D784 /* README */; };
 		3C159923154DAAFE0085A804 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C159922154DAAFE0085A804 /* Cocoa.framework */; };
 		3C15992D154DAAFE0085A804 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3C15992B154DAAFE0085A804 /* InfoPlist.strings */; };
 		3C159933154DAAFE0085A804 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3C159931154DAAFE0085A804 /* Credits.rtf */; };
 		3C159936154DAAFE0085A804 /* CRTLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */; };
 		3C159939154DAAFE0085A804 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C159937154DAAFE0085A804 /* MainMenu.xib */; };
-		3C159958154DABC00085A804 /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = 3C159956154DABC00085A804 /* AUTHORS */; };
 		3C159959154DABC00085A804 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 3C159957154DABC00085A804 /* COPYING */; };
 		3C1599A1154DB8FA0085A804 /* rtl-sdr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C159983154DAEB10085A804 /* rtl-sdr.framework */; };
 		3C83ADD9154E281B009CE93C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C15992E154DAAFE0085A804 /* main.m */; };
@@ -35,6 +35,7 @@
 		3C0F4B0F155CC7FA0084D784 /* NetworkServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkServer.m; sourceTree = "<group>"; };
 		3C0F4B10155CC7FA0084D784 /* NetworkSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkSession.h; sourceTree = "<group>"; };
 		3C0F4B11155CC7FA0084D784 /* NetworkSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkSession.m; sourceTree = "<group>"; };
+		3C0F4B4D155CCE220084D784 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		3C15991E154DAAFE0085A804 /* Cocoa-rtl-sdr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cocoa-rtl-sdr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C159922154DAAFE0085A804 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		3C159925154DAAFE0085A804 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -50,8 +51,7 @@
 		3C159938154DAAFE0085A804 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		3C15993F154DAB260085A804 /* Cocoa-rtl-sdr.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Cocoa-rtl-sdr.entitlements"; sourceTree = "<group>"; };
 		3C15994F154DABA80085A804 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		3C159956154DABC00085A804 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
-		3C159957154DABC00085A804 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		3C159957154DABC00085A804 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING; path = "Cocoa-rtl-sdr/COPYING"; sourceTree = "<group>"; };
 		3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "rtl-sdr.xcodeproj"; path = "rtl-sdr/rtl-sdr.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,6 +82,8 @@
 		3C159913154DAAFE0085A804 = {
 			isa = PBXGroup;
 			children = (
+				3C159957154DABC00085A804 /* COPYING */,
+				3C0F4B4D155CCE220084D784 /* README */,
 				3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */,
 				3C159928154DAAFE0085A804 /* Cocoa-rtl-sdr */,
 				3C159921154DAAFE0085A804 /* Frameworks */,
@@ -145,8 +147,6 @@
 		3C159940154DAB500085A804 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3C159956154DABC00085A804 /* AUTHORS */,
-				3C159957154DABC00085A804 /* COPYING */,
 				3C15994F154DABA80085A804 /* main.c */,
 			);
 			name = Resources;
@@ -230,8 +230,8 @@
 				3C15992D154DAAFE0085A804 /* InfoPlist.strings in Resources */,
 				3C159933154DAAFE0085A804 /* Credits.rtf in Resources */,
 				3C159939154DAAFE0085A804 /* MainMenu.xib in Resources */,
-				3C159958154DABC00085A804 /* AUTHORS in Resources */,
 				3C159959154DABC00085A804 /* COPYING in Resources */,
+				3C0F4B4E155CCE220084D784 /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
