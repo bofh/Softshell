@@ -9,7 +9,7 @@
 #import "RTLSDRDevice.h"
 #import "RTLSDRTuner.h"
 
-#define DEBUG_USB
+//#define DEBUG_USB
 
 // OSMOCOM RTL-SDR DERIVED CODE
 #define DEFAULT_BUF_NUMBER	32
@@ -499,7 +499,9 @@ static dispatch_once_t onceToken;
         buffer[1] = 0x00;
     }
     
+#ifdef DEBUG_USB
     NSLog(@"i2c write address 0x%x data 0x%x length %d", i2c_addr, *(uint16_t *)buffer, len);
+#endif
     
     return [self writeArray:buffer toAddress:addr inBlock:IICB length:len];
 }
@@ -510,7 +512,9 @@ static dispatch_once_t onceToken;
 
     int retval = [self readArray:buffer fromAddress:addr inBlock:IICB length:len];
     
+#ifdef DEBUG_USB
     NSLog(@"i2c read address 0x%x data 0x%x length %d", i2c_addr, *buffer, len);
+#endif
 
     return retval;
 }
