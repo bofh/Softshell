@@ -150,6 +150,7 @@
     if (![self I2CWriteArray:writearray length:2 atAddress:135])
         return NO;
 
+    // END OSMOCOM CODE
 	return YES;
 }
 /****************************************************************************\
@@ -221,6 +222,7 @@
             return NO;
 	}
     
+    // END OSMOCOM CODE
 	return YES;
 }
 /****************************************************************************\
@@ -245,6 +247,7 @@
     if (![self I2CWriteArray:writearray length:2 atAddress:112])
         return NO;
     
+    // END OSMOCOM CODE
 	return YES;
 }
 
@@ -342,7 +345,8 @@
 	{
 		sum=read1[0];
 	}
-    
+    // END OSMOCOM CODE
+
 //	status=I2CWriteByte(pTuner, 200,27,sum);
     if (![self I2CWriteByte:sum toRegister:27]) return NO;
     
@@ -369,6 +373,8 @@
 //	status=I2CWriteByte (pTuner, 200,5,0);
     if (![self I2CWriteByte:0 toRegister:5]) return NO;
     
+    // END OSMOCOM CODE
+
 	return YES;
 }
 
@@ -765,7 +771,8 @@
 //	status=I2CWriteByte (pTuner, 200,5,writearray[0]);
     if (![self I2CWriteByte:writearray[0] toRegister:5]) return NO;
     
-	return E4000_1_SUCCESS;
+    // END OSMOCOM CODE
+	return YES;
 }
 
 /****************************************************************************\
@@ -910,9 +917,11 @@
 	}
     
 //	status=I2CWriteByte (pTuner, 200,16,writearray[0]);
+    // END OSMOCOM CODE
+
     if (![self I2CWriteByte:writearray[0] toRegister:16]) return NO;
     
-	return E4000_1_SUCCESS;
+	return YES;
 }
 /****************************************************************************\
  *  Function: IFfilter
@@ -1096,6 +1105,8 @@
 	}
     
 //	status=I2CWriteArray(pTuner, 200,17,2,writearray);
+    // END OSMOCOM CODE
+
     if (![self I2CWriteArray:writearray length:2 atAddress:17])
         return NO;
 
@@ -1135,7 +1146,8 @@
         if (![self I2CWriteByte:0 toRegister:120]) return NO;
 	}
     
-	return E4000_1_SUCCESS;
+    // END OSMOCOM CODE
+	return YES;
 }
 
 /****************************************************************************\
@@ -1326,6 +1338,8 @@
     
 	writearray[0] = (QRANGE * 64) + QOFF;
 //	status=I2CWriteByte(pTuner, 200,82,writearray[0]);
+    // END OSMOCOM CODE
+
     if (![self I2CWriteByte:writearray[0] toRegister:82]) return NO;
     
 	return YES;
@@ -1404,7 +1418,9 @@
     
     if ([self IFfilterBandwidth:BandwidthKhz refClock:CrystalFreqKhz])
         bandWidth = BandwidthKhz * 1000;
-        
+    
+    // END OSMOCOM CODE
+
 //	return bandWidth;
 }
 

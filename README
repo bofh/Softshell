@@ -11,6 +11,14 @@ Steve Markgraf <steve@steve-m.de>
 Dimitri Stolnikov <horiz0n@gmx.net>
 Hoernchen <la@tfc-server.de>
 
+This port of their code is written by:
+
+William Dillon <hpux735@gmail.com>
+
+In the majority of cases, the osmocom code is marked by:
+    // OSMOCOM RTL-SDR DERIVED CODE
+    
+    
 As their code is GPL v. 2, so is this code.  A copy of the GPL is available
 in the COPYING file.
 
