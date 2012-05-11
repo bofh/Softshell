@@ -11,10 +11,15 @@
 @implementation CRTLAppDelegate
 
 @synthesize window = _window;
+
 @synthesize deviceComboBox;
+@synthesize tunerTypeField;
+
 @synthesize networkCheckBox;
 @synthesize portNumberField;
-@synthesize tunerTypeField;
+
+@synthesize centerFreqField;
+@synthesize sampleRateField;
 
 - (void)dealloc
 {
@@ -59,8 +64,10 @@
     } else {
         if ([device tuner] != nil) {
             [tunerTypeField setStringValue:[[device tuner] tunerType]];
-            [device setSampleRate:2048000];
-            [device setCenterFreq:152000000];
+
+            // Set the initial frequencies from the text fields
+            [device setSampleRate:[[self centerFreqField] intValue]];
+            [device setCenterFreq:[[self sampleRateField] intValue]];
         }
     }
         
@@ -96,32 +103,33 @@
             running = YES;
             // While the running variable remains YES, collect samples
             do {
-                // Perform the read 
-                NSData *inputData = [device readSychronousLength:4096];
-                const uint8_t *inputSamples = [inputData bytes];
-                
-                NSMutableData *outputData = [[NSMutableData alloc] initWithLength:sizeof(float) * 4096];
-                float *outputSamples = [outputData mutableBytes];
-                
-                // Convert the samples from bytes to floats between -1 and 1
-                for (int i = 0; i < 4096; i++) {
-                    outputSamples[i] = (float)(inputSamples[i] - 127) / 128;
-                }
-                
-                // Get a stable copy of the sessions
-                NSArray *tempSessions;
-                @synchronized(sessions) {
-                    tempSessions = [sessions copy];
-                }
-                
-                // Send the data to every session (asynch)
-                for (OSUNetSession *session in tempSessions) {
-                    [session sendData:outputData];
-                }
-                
-                [outputData release];
-                [tempSessions release];
-                
+                @autoreleasepool {
+                    // Perform the read 
+                    NSData *inputData = [device readSychronousLength:4096];
+                    const uint8_t *inputSamples = [inputData bytes];
+                    
+                    NSMutableData *outputData = [[NSMutableData alloc] initWithLength:sizeof(float) * 4096];
+                    float *outputSamples = [outputData mutableBytes];
+                    
+                    // Convert the samples from bytes to floats between -1 and 1
+                    for (int i = 0; i < 4096; i++) {
+                        outputSamples[i] = (float)(inputSamples[i] - 127) / 128;
+                    }
+                    
+                    // Get a stable copy of the sessions
+                    NSArray *tempSessions;
+                    @synchronized(sessions) {
+                        tempSessions = [sessions copy];
+                    }
+                    
+                    // Send the data to every session (asynch)
+                    for (OSUNetSession *session in tempSessions) {
+                        [session sendData:outputData];
+                    }
+                    
+                    [outputData release];
+                    [tempSessions release];
+                }                
             } while (running);
         });
     }
@@ -136,6 +144,12 @@
         // Stop the server
         [server stop];
     }    
+}
+
+-(IBAction)updateTuner:(id)sender
+{
+    [device setCenterFreq:[[self sampleRateField] intValue]];
+    [device setSampleRate:[[self centerFreqField] intValue]];
 }
 
 #pragma mark -
