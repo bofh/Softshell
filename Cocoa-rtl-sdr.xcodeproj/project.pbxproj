@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3C0F4AE3155C7E0B0084D784 /* OSUNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C0F4ADC155C7E020084D784 /* OSUNetwork.framework */; };
+		3C0F4B12155CC7FA0084D784 /* NetworkServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0F4B0F155CC7FA0084D784 /* NetworkServer.m */; };
+		3C0F4B13155CC7FA0084D784 /* NetworkSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0F4B11155CC7FA0084D784 /* NetworkSession.m */; };
 		3C159923154DAAFE0085A804 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C159922154DAAFE0085A804 /* Cocoa.framework */; };
 		3C15992D154DAAFE0085A804 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3C15992B154DAAFE0085A804 /* InfoPlist.strings */; };
 		3C159933154DAAFE0085A804 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3C159931154DAAFE0085A804 /* Credits.rtf */; };
@@ -20,27 +21,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3C0F4ADB155C7E020084D784 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3C0F4ACC155C7E020084D784 /* OSUNetwork.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3C7A7390138B1CBA00621A53;
-			remoteInfo = OSUNetwork;
-		};
-		3C0F4ADD155C7E020084D784 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3C0F4ACC155C7E020084D784 /* OSUNetwork.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3CE81E70139EE09D00D90BC3;
-			remoteInfo = "initiate-test";
-		};
-		3C0F4ADF155C7E020084D784 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3C0F4ACC155C7E020084D784 /* OSUNetwork.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3CBA5C16139840F700B9E9F1;
-			remoteInfo = "listen-test";
-		};
 		3C159982154DAEB10085A804 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */;
@@ -51,7 +31,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3C0F4ACC155C7E020084D784 /* OSUNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OSUNetwork.xcodeproj; path = ../../Thesis/OSUNetwork/OSUNetwork.xcodeproj; sourceTree = "<group>"; };
+		3C0F4B0E155CC7FA0084D784 /* NetworkServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkServer.h; sourceTree = "<group>"; };
+		3C0F4B0F155CC7FA0084D784 /* NetworkServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkServer.m; sourceTree = "<group>"; };
+		3C0F4B10155CC7FA0084D784 /* NetworkSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkSession.h; sourceTree = "<group>"; };
+		3C0F4B11155CC7FA0084D784 /* NetworkSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkSession.m; sourceTree = "<group>"; };
 		3C15991E154DAAFE0085A804 /* Cocoa-rtl-sdr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cocoa-rtl-sdr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C159922154DAAFE0085A804 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		3C159925154DAAFE0085A804 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -79,27 +62,26 @@
 			files = (
 				3C159923154DAAFE0085A804 /* Cocoa.framework in Frameworks */,
 				3C1599A1154DB8FA0085A804 /* rtl-sdr.framework in Frameworks */,
-				3C0F4AE3155C7E0B0084D784 /* OSUNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3C0F4ACD155C7E020084D784 /* Products */ = {
+		3C0F4AEE155CC20C0084D784 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				3C0F4ADC155C7E020084D784 /* OSUNetwork.framework */,
-				3C0F4ADE155C7E020084D784 /* initiate-test */,
-				3C0F4AE0155C7E020084D784 /* listen-test */,
+				3C0F4B0E155CC7FA0084D784 /* NetworkServer.h */,
+				3C0F4B0F155CC7FA0084D784 /* NetworkServer.m */,
+				3C0F4B10155CC7FA0084D784 /* NetworkSession.h */,
+				3C0F4B11155CC7FA0084D784 /* NetworkSession.m */,
 			);
-			name = Products;
+			name = Network;
 			sourceTree = "<group>";
 		};
 		3C159913154DAAFE0085A804 = {
 			isa = PBXGroup;
 			children = (
-				3C0F4ACC155C7E020084D784 /* OSUNetwork.xcodeproj */,
 				3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */,
 				3C159928154DAAFE0085A804 /* Cocoa-rtl-sdr */,
 				3C159921154DAAFE0085A804 /* Frameworks */,
@@ -137,7 +119,8 @@
 		3C159928154DAAFE0085A804 /* Cocoa-rtl-sdr */ = {
 			isa = PBXGroup;
 			children = (
-				3C159940154DAB500085A804 /* New Group */,
+				3C0F4AEE155CC20C0084D784 /* Network */,
+				3C159940154DAB500085A804 /* Resources */,
 				3C15993F154DAB260085A804 /* Cocoa-rtl-sdr.entitlements */,
 				3C159934154DAAFE0085A804 /* CRTLAppDelegate.h */,
 				3C159935154DAAFE0085A804 /* CRTLAppDelegate.m */,
@@ -159,14 +142,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		3C159940154DAB500085A804 /* New Group */ = {
+		3C159940154DAB500085A804 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				3C159956154DABC00085A804 /* AUTHORS */,
 				3C159957154DABC00085A804 /* COPYING */,
 				3C15994F154DABA80085A804 /* main.c */,
 			);
-			name = "New Group";
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		3C15997F154DAEB00085A804 /* Products */ = {
@@ -218,10 +201,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 3C0F4ACD155C7E020084D784 /* Products */;
-					ProjectRef = 3C0F4ACC155C7E020084D784 /* OSUNetwork.xcodeproj */;
-				},
-				{
 					ProductGroup = 3C15997F154DAEB00085A804 /* Products */;
 					ProjectRef = 3C15997E154DAEB00085A804 /* rtl-sdr.xcodeproj */;
 				},
@@ -234,27 +213,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		3C0F4ADC155C7E020084D784 /* OSUNetwork.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = OSUNetwork.framework;
-			remoteRef = 3C0F4ADB155C7E020084D784 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		3C0F4ADE155C7E020084D784 /* initiate-test */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = "initiate-test";
-			remoteRef = 3C0F4ADD155C7E020084D784 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		3C0F4AE0155C7E020084D784 /* listen-test */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = "listen-test";
-			remoteRef = 3C0F4ADF155C7E020084D784 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		3C159983154DAEB10085A804 /* rtl-sdr.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -286,6 +244,8 @@
 			files = (
 				3C83ADD9154E281B009CE93C /* main.m in Sources */,
 				3C159936154DAAFE0085A804 /* CRTLAppDelegate.m in Sources */,
+				3C0F4B12155CC7FA0084D784 /* NetworkServer.m in Sources */,
+				3C0F4B13155CC7FA0084D784 /* NetworkSession.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
