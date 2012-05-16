@@ -330,10 +330,10 @@
 				CODE_SIGN_ENTITLEMENTS = "Cocoa-rtl-sdr/Cocoa-rtl-sdr.entitlements";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Prefix.pch";
-				HEADER_SEARCH_PATHS = "/opt/local/include/libusb-1.0";
+				HEADER_SEARCH_PATHS = "/usr/local/include/libusb-1.0";
 				INFOPLIST_FILE = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Info.plist";
-				LIBRARY_SEARCH_PATHS = /opt/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -345,10 +345,10 @@
 				CODE_SIGN_ENTITLEMENTS = "Cocoa-rtl-sdr/Cocoa-rtl-sdr.entitlements";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Prefix.pch";
-				HEADER_SEARCH_PATHS = "/opt/local/include/libusb-1.0";
+				HEADER_SEARCH_PATHS = "/usr/local/include/libusb-1.0";
 				INFOPLIST_FILE = "Cocoa-rtl-sdr/Cocoa-rtl-sdr-Info.plist";
-				LIBRARY_SEARCH_PATHS = /opt/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

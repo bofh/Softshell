@@ -354,11 +354,11 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "rtl-sdr/rtl-sdr-Prefix.pch";
-				HEADER_SEARCH_PATHS = "/opt/local/include/libusb-1.0";
+				HEADER_SEARCH_PATHS = "/usr/local/include/libusb-1.0";
 				INFOPLIST_FILE = "rtl-sdr/rtl-sdr-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/opt/local/lib,
+					/usr/local/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -374,11 +374,11 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "rtl-sdr/rtl-sdr-Prefix.pch";
-				HEADER_SEARCH_PATHS = "/opt/local/include/libusb-1.0";
+				HEADER_SEARCH_PATHS = "/usr/local/include/libusb-1.0";
 				INFOPLIST_FILE = "rtl-sdr/rtl-sdr-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/opt/local/lib,
+					/usr/local/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
